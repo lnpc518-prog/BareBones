@@ -33,7 +33,7 @@ input {
   box-sizing: border-box;
 }
 
-/* BUTTON BASE */
+/* BUTTON */
 button {
   padding: 10px;
   font-size: 16px;
@@ -45,7 +45,7 @@ button {
   transition: transform 90ms ease, opacity 90ms ease;
 }
 
-/* RESET */
+/* RESET BUTTON */
 .reset-btn {
   width: 100%;
   padding: 14px;
@@ -55,7 +55,7 @@ button {
   font-weight: 600;
 }
 
-/* FLOATING ADD */
+/* FLOATING BUTTON */
 .floating-add {
   position: fixed;
   top: 15px;
@@ -69,7 +69,7 @@ button {
   box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 
-/* ===== IOS ROW ===== */
+/* ===== ROW ===== */
 
 .chore {
   display: flex;
@@ -79,13 +79,14 @@ button {
   border-bottom: 1px solid #eee;
 }
 
-/* LEFT SIDE */
+/* LEFT SIDE CONTAINER */
 .left {
   display: flex;
   gap: 10px;
-  align-items: flex-start;
+  align-items: center;
   flex: 1;
   min-width: 0;
+  overflow: hidden; /* critical for shrinking behavior */
 }
 
 /* COUNT */
@@ -94,31 +95,33 @@ button {
   text-align: center;
   font-weight: 600;
   flex-shrink: 0;
-  margin-top: 2px;
 }
 
-/* NAME (iOS PERFECT: 1–2 line clamp) */
+/* NAME (NO ELLIPSIS, SHRINKS INSTEAD) */
 .name {
   flex: 1;
+  min-width: 0;
+
   font-size: 15px;
   font-weight: 500;
   color: #111;
-  line-height: 1.3;
 
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-
+  white-space: nowrap;
   overflow: hidden;
+  
+  /* no "..." */
+  text-overflow: clip;
 }
 
 /* MONEY */
 .value {
   margin-left: auto;
   flex-shrink: 0;
+
   font-size: 14px;
   font-weight: 500;
   color: #3a3a3c;
+
   padding-left: 10px;
   white-space: nowrap;
 }
@@ -182,7 +185,7 @@ function format(n) {
   return Number(n).toFixed(2);
 }
 
-/* PRESS EFFECT */
+/* PRESS */
 function press(el) {
   el.classList.add("pressed");
   setTimeout(() => el.classList.remove("pressed"), 120);
