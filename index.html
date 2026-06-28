@@ -12,12 +12,10 @@ body {
   background: #f2f2f7;
   color: #111;
   touch-action: manipulation;
+  overflow-x: hidden;
 }
 
-h2 {
-  text-align: center;
-  font-weight: 600;
-}
+h2 { text-align: center; font-weight: 600; }
 
 .box {
   background: white;
@@ -38,7 +36,7 @@ input {
   box-sizing: border-box;
 }
 
-/* ✅ FIXED: RELIABLE IOS PRESS FEEDBACK */
+/* buttons (no animation needed anymore) */
 button {
   padding: 10px;
   font-size: 16px;
@@ -46,23 +44,10 @@ button {
   border-radius: 10px;
   background: #e5e5ea;
   color: #111;
-
   -webkit-tap-highlight-color: transparent;
-
-  /* IMPORTANT: forces iOS repaint so active state is visible */
-  transform: translateZ(0);
-
-  transition: transform 0.08s ease, opacity 0.08s ease, background 0.08s ease;
 }
 
-/* 🔥 THIS IS THE KEY */
-button:active {
-  transform: scale(0.94);
-  opacity: 0.5;
-  background: #c7c7cc;
-}
-
-/* RESET BUTTON */
+/* reset button */
 .reset-btn {
   width: 100%;
   display: block;
@@ -89,6 +74,30 @@ button:active {
   box-shadow: 0 2px 8px rgba(0,0,0,0.12);
 }
 
+/* ripple effect layer */
+.ripple {
+  position: fixed;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.12);
+  transform: scale(0);
+  animation: rippleAnim 350ms ease-out;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+@keyframes rippleAnim {
+  to {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+.box {
+  display: block;
+}
+
 .chore {
   display: flex;
   justify-content: space-between;
@@ -103,20 +112,9 @@ button:active {
   flex: 1;
 }
 
-.count {
-  width: 30px;
-  text-align: center;
-  font-weight: 600;
-}
-
-.name {
-  flex: 1;
-}
-
-.value {
-  font-size: 13px;
-  color: #666;
-}
+.count { width: 30px; text-align: center; font-weight: 600; }
+.name { flex: 1; }
+.value { font-size: 13px; color: #666; }
 
 .actions {
   display: flex;
@@ -133,11 +131,11 @@ button:active {
 
 <body>
 
-<button class="floating-add" onclick="focusAdd()">+</button>
+<button class="floating-add" onclick="focusAdd(event)">+</button>
 
 <div class="box">
   <h2>Balance: $<span id="balance">0.00</span></h2>
-  <button class="reset-btn" onclick="resetDay()">Reset Day</button>
+  <button class="reset-btn" onclick="resetDay(event)">Reset Day</button>
 </div>
 
 <div class="box">
@@ -149,7 +147,7 @@ button:active {
   <h3>Add Chore</h3>
   <input id="name">
   <input id="amount">
-  <button onclick="addChore()">Add</button>
+  <button onclick="addChore(event)">Add</button>
 </div>
 
 <script>
@@ -169,6 +167,29 @@ function load() {
 function format(n) {
   return Number(n).toFixed(2);
 }
+
+/* 🔥 GUARANTEED VISUAL FEEDBACK */
+function ripple(e) {
+  const r = document.createElement("div");
+  r.className = "ripple";
+
+  const x = e.clientX;
+  const y = e.clientY;
+
+  r.style.left = x - 40 + "px";
+  r.style.top = y - 40 + "px";
+
+  document.body.appendChild(r);
+
+  setTimeout(() => r.remove(), 400);
+}
+
+/* attach ripple to ALL taps */
+document.addEventListener("click", (e) => {
+  if (e.target.tagName === "BUTTON") {
+    ripple(e);
+  }
+});
 
 function render() {
   document.getElementById("balance").innerText = format(balance);
@@ -198,10 +219,10 @@ function render() {
   });
 }
 
+/* ACTIONS */
 function addChore() {
   const name = document.getElementById("name").value;
   const amount = parseFloat(document.getElementById("amount").value);
-
   if (!name || isNaN(amount)) return;
 
   chores.push({ name, amount, count: 0 });
@@ -230,16 +251,14 @@ function remove(i) {
 }
 
 function deleteChore(i) {
-  const ok = confirm("Delete this chore?");
-  if (!ok) return;
+  if (!confirm("Delete this chore?")) return;
   chores.splice(i, 1);
   save();
   render();
 }
 
 function resetDay() {
-  const ok = confirm("Reset everything for today?");
-  if (!ok) return;
+  if (!confirm("Reset everything for today?")) return;
 
   balance = 0;
   chores.forEach(c => c.count = 0);
