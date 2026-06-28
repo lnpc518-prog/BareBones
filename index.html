@@ -45,7 +45,7 @@ button {
   transition: transform 90ms ease, opacity 90ms ease;
 }
 
-/* RESET (neutral iOS style) */
+/* RESET */
 .reset-btn {
   width: 100%;
   padding: 14px;
@@ -55,7 +55,7 @@ button {
   font-weight: 600;
 }
 
-/* FLOATING BUTTON */
+/* FLOATING ADD */
 .floating-add {
   position: fixed;
   top: 15px;
@@ -69,7 +69,7 @@ button {
   box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 
-/* ===== iOS LIST ROW ===== */
+/* ===== IOS ROW ===== */
 
 .chore {
   display: flex;
@@ -79,11 +79,11 @@ button {
   border-bottom: 1px solid #eee;
 }
 
-/* LEFT SECTION */
+/* LEFT SIDE */
 .left {
   display: flex;
   gap: 10px;
-  align-items: center;
+  align-items: flex-start;
   flex: 1;
   min-width: 0;
 }
@@ -94,22 +94,25 @@ button {
   text-align: center;
   font-weight: 600;
   flex-shrink: 0;
+  margin-top: 2px;
 }
 
-/* NAME (flexible, smooth shrink) */
+/* NAME (iOS PERFECT: 1–2 line clamp) */
 .name {
   flex: 1;
-  min-width: 0;
   font-size: 15px;
   font-weight: 500;
   color: #111;
+  line-height: 1.3;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
-/* 💰 RIGHT ALIGNED MONEY */
+/* MONEY */
 .value {
   margin-left: auto;
   flex-shrink: 0;
@@ -117,6 +120,7 @@ button {
   font-weight: 500;
   color: #3a3a3c;
   padding-left: 10px;
+  white-space: nowrap;
 }
 
 /* ACTIONS */
@@ -164,7 +168,6 @@ button {
 let balance = 0;
 let chores = [];
 
-/* STORAGE */
 function save() {
   localStorage.setItem("balance", balance);
   localStorage.setItem("chores", JSON.stringify(chores));
@@ -179,7 +182,7 @@ function format(n) {
   return Number(n).toFixed(2);
 }
 
-/* PRESS FEEDBACK */
+/* PRESS EFFECT */
 function press(el) {
   el.classList.add("pressed");
   setTimeout(() => el.classList.remove("pressed"), 120);
