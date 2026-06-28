@@ -45,7 +45,7 @@ button {
   transition: transform 90ms ease, opacity 90ms ease;
 }
 
-/* RESET BUTTON */
+/* RESET (neutral iOS style) */
 .reset-btn {
   width: 100%;
   padding: 14px;
@@ -69,7 +69,7 @@ button {
   box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 
-/* ===== iOS ROW LAYOUT FIX ===== */
+/* ===== iOS LIST ROW ===== */
 
 .chore {
   display: flex;
@@ -79,7 +79,7 @@ button {
   border-bottom: 1px solid #eee;
 }
 
-/* LEFT SIDE CONTAINER */
+/* LEFT SECTION */
 .left {
   display: flex;
   gap: 10px;
@@ -96,23 +96,27 @@ button {
   flex-shrink: 0;
 }
 
-/* NAME (FIXED PROPER FLEX BEHAVIOR) */
+/* NAME (flexible, smooth shrink) */
 .name {
   flex: 1;
   min-width: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #111;
+
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* 💰 FIXED MONEY COLUMN */
+/* 💰 RIGHT ALIGNED MONEY */
 .value {
-  width: 95px;
-  text-align: right;
+  margin-left: auto;
+  flex-shrink: 0;
   font-size: 14px;
   font-weight: 500;
   color: #3a3a3c;
-  flex-shrink: 0;
+  padding-left: 10px;
 }
 
 /* ACTIONS */
