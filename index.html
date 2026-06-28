@@ -2,62 +2,49 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chore App</title>
 
 <style>
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Arial;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
   margin: 20px;
   background: #f2f2f7;
   color: #111;
 }
 
-/* iOS CARD STYLE */
+/* CARD */
 .box {
-  background: #fff;
+  background: white;
   padding: 15px;
-  border-radius: 18px;
+  border-radius: 16px;
   margin-bottom: 15px;
-  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
 }
 
-/* INPUT */
+/* INPUTS */
 input {
   width: 100%;
   padding: 12px;
+  margin: 6px 0 10px;
   font-size: 16px;
-  border-radius: 12px;
+  border-radius: 10px;
   border: 1px solid #ddd;
-  margin-top: 8px;
-  margin-bottom: 10px;
-  outline: none;
 }
 
-/* 🍏 iOS BUTTON BASE */
+/* BUTTON BASE */
 button {
   padding: 10px;
   font-size: 16px;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   background: #e5e5ea;
   color: #111;
-
   -webkit-tap-highlight-color: transparent;
-
-  transform: translateZ(0);
-  transition: transform 180ms cubic-bezier(.2,.8,.2,1),
-              opacity 180ms ease,
-              background 180ms ease;
+  transition: transform 90ms ease, opacity 90ms ease;
 }
 
-/* ✨ iPHONE TAP FEEL (key upgrade) */
-button.is-pressed {
-  transform: scale(0.92);
-  opacity: 0.55;
-}
-
-/* iOS RED BUTTON */
+/* RESET (NOT RED) */
 .reset-btn {
   width: 100%;
   padding: 14px;
@@ -69,14 +56,14 @@ button.is-pressed {
 /* FLOATING BUTTON */
 .floating-add {
   position: fixed;
-  top: 16px;
-  right: 16px;
+  top: 15px;
+  right: 15px;
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  font-size: 24px;
   background: white;
   border: 1px solid #ddd;
+  font-size: 22px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 
@@ -91,7 +78,6 @@ button.is-pressed {
 .left {
   display: flex;
   gap: 10px;
-  flex: 1;
 }
 
 .count {
@@ -100,24 +86,15 @@ button.is-pressed {
   font-weight: 600;
 }
 
-.name {
-  flex: 1;
-}
-
 .value {
-  font-size: 13px;
   color: #666;
+  font-size: 13px;
 }
 
-.actions {
-  display: flex;
-  gap: 6px;
-}
-
-.actions button {
-  padding: 8px 10px;
-  border-radius: 10px;
-  font-size: 14px;
+/* pressed state */
+.pressed {
+  transform: scale(0.94);
+  opacity: 0.55;
 }
 </style>
 </head>
@@ -128,7 +105,7 @@ button.is-pressed {
 
 <div class="box">
   <h2>Balance: $<span id="balance">0.00</span></h2>
-  <button class="reset-btn" onclick="resetDay()">Reset Day</button>
+  <button class="reset-btn" onclick="resetDay(event)">Reset Day</button>
 </div>
 
 <div class="box">
@@ -140,13 +117,14 @@ button.is-pressed {
   <h3>Add Chore</h3>
   <input id="name" placeholder="Chore name">
   <input id="amount" placeholder="Amount">
-  <button onclick="addChore()">Add</button>
+  <button onclick="addChore(event)">Add</button>
 </div>
 
 <script>
 let balance = 0;
 let chores = [];
 
+/* STORAGE */
 function save() {
   localStorage.setItem("balance", balance);
   localStorage.setItem("chores", JSON.stringify(chores));
@@ -161,22 +139,13 @@ function format(n) {
   return Number(n).toFixed(2);
 }
 
-/* 🍏 REAL iOS PRESS FEEL */
-function addIOSPress(el) {
-  if (el.dataset.bound) return;
-  el.dataset.bound = "true";
-
-  el.addEventListener("pointerdown", () => {
-    el.classList.add("is-pressed");
-  });
-
-  const up = () => el.classList.remove("is-pressed");
-
-  el.addEventListener("pointerup", up);
-  el.addEventListener("pointercancel", up);
-  el.addEventListener("pointerleave", up);
+/* 🔥 RELIABLE IOS FEEL (VISIBLE PRESS) */
+function press(el) {
+  el.classList.add("pressed");
+  setTimeout(() => el.classList.remove("pressed"), 120);
 }
 
+/* RENDER */
 function render() {
   document.getElementById("balance").innerText = format(balance);
 
@@ -190,29 +159,28 @@ function render() {
     div.innerHTML = `
       <div class="left">
         <div class="count">${c.count || 0}</div>
-        <div class="name">${c.name}</div>
+        <div>${c.name}</div>
         <div class="value">$${format(c.amount)}</div>
       </div>
 
-      <div class="actions">
-        <button onclick="add(${i})">+</button>
-        <button onclick="remove(${i})">-</button>
-        <button onclick="deleteChore(${i})">Delete</button>
+      <div>
+        <button onclick="press(this); add(${i})">+</button>
+        <button onclick="press(this); remove(${i})">-</button>
+        <button onclick="press(this); deleteChore(${i})">Delete</button>
       </div>
     `;
 
     list.appendChild(div);
   });
-
-  requestAnimationFrame(() => {
-    document.querySelectorAll("button").forEach(addIOSPress);
-  });
 }
 
 /* ACTIONS */
-function addChore() {
+function addChore(e) {
+  press(e.target);
+
   const name = document.getElementById("name").value;
   const amount = parseFloat(document.getElementById("amount").value);
+
   if (!name || isNaN(amount)) return;
 
   chores.push({ name, amount, count: 0 });
@@ -247,8 +215,10 @@ function deleteChore(i) {
   render();
 }
 
-function resetDay() {
-  if (!confirm("Reset everything for today?")) return;
+function resetDay(e) {
+  press(e.target);
+
+  if (!confirm("Reset everything?")) return;
 
   balance = 0;
   chores.forEach(c => c.count = 0);
