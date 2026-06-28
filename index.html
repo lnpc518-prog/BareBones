@@ -27,7 +27,6 @@ h2 {
   box-shadow: 0 1px 6px rgba(0,0,0,0.06);
 }
 
-/* INPUTS */
 input {
   width: 100%;
   padding: 12px;
@@ -37,10 +36,9 @@ input {
   border: 1px solid #ddd;
   border-radius: 10px;
   box-sizing: border-box;
-  outline: none;
 }
 
-/* 🍏 BUTTON BASE */
+/* BUTTON BASE */
 button {
   padding: 10px;
   font-size: 16px;
@@ -51,18 +49,17 @@ button {
 
   -webkit-tap-highlight-color: transparent;
 
-  /* smoother feel */
-  transition: transform 0.08s ease, opacity 0.12s ease, background 0.12s ease;
+  transition: transform 0.12s ease, opacity 0.12s ease, background 0.12s ease;
 }
 
-/* 🔥 REAL PRESS FEEDBACK */
-button:active {
-  transform: scale(0.96);
+/* REAL PRESS FEEDBACK CLASS */
+button.pressed {
+  transform: scale(0.95);
   opacity: 0.55;
   background: #d1d1d6;
 }
 
-/* 🍎 iOS STYLE RESET BUTTON */
+/* RESET BUTTON (iOS STYLE) */
 .reset-btn {
   width: 100%;
   display: block;
@@ -162,6 +159,7 @@ button:active {
 let balance = 0;
 let chores = [];
 
+/* SAVE / LOAD */
 function save() {
   localStorage.setItem("balance", balance);
   localStorage.setItem("chores", JSON.stringify(chores));
@@ -172,10 +170,12 @@ function load() {
   chores = JSON.parse(localStorage.getItem("chores")) || [];
 }
 
+/* FORMAT */
 function format(n) {
   return Number(n).toFixed(2);
 }
 
+/* RENDER */
 function render() {
   document.getElementById("balance").innerText = format(balance);
 
@@ -204,6 +204,7 @@ function render() {
   });
 }
 
+/* ACTIONS */
 function addChore() {
   const name = document.getElementById("name").value;
   const amount = parseFloat(document.getElementById("amount").value);
@@ -258,6 +259,22 @@ function focusAdd() {
   document.getElementById("name").focus();
 }
 
+/* 🔥 REAL TOUCH FEEDBACK (iPhone FIX) */
+document.addEventListener("touchstart", function (e) {
+  if (e.target.tagName === "BUTTON") {
+    e.target.classList.add("pressed");
+  }
+}, { passive: true });
+
+document.addEventListener("touchend", function (e) {
+  if (e.target.tagName === "BUTTON") {
+    setTimeout(() => {
+      e.target.classList.remove("pressed");
+    }, 120);
+  }
+});
+
+/* INIT */
 load();
 render();
 </script>
