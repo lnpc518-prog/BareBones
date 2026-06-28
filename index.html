@@ -13,7 +13,7 @@ body {
   color: #111;
 }
 
-/* CARD */
+/* CARD STYLE */
 .box {
   background: white;
   padding: 15px;
@@ -30,6 +30,7 @@ input {
   font-size: 16px;
   border-radius: 10px;
   border: 1px solid #ddd;
+  box-sizing: border-box;
 }
 
 /* BUTTON BASE */
@@ -44,12 +45,13 @@ button {
   transition: transform 90ms ease, opacity 90ms ease;
 }
 
-/* RESET (NOT RED) */
+/* RESET BUTTON (FIXED COLOR) */
 .reset-btn {
   width: 100%;
   padding: 14px;
   border-radius: 14px;
-  background: #e5e5ea;
+  background: #e5e5ea !important;
+  color: #111 !important;
   font-weight: 600;
 }
 
@@ -67,10 +69,11 @@ button {
   box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 
-/* LIST */
+/* CHORES LIST */
 .chore {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 12px;
   border-bottom: 1px solid #eee;
 }
@@ -78,6 +81,8 @@ button {
 .left {
   display: flex;
   gap: 10px;
+  flex: 1;
+  align-items: center;
 }
 
 .count {
@@ -86,15 +91,29 @@ button {
   font-weight: 600;
 }
 
+/* ✔ FIXED MONEY STYLE */
 .value {
-  color: #666;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #3a3a3c;
+  white-space: nowrap;
 }
 
-/* pressed state */
+.actions {
+  display: flex;
+  gap: 6px;
+}
+
+.actions button {
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+/* PRESS EFFECT */
 .pressed {
   transform: scale(0.94);
-  opacity: 0.55;
+  opacity: 0.6;
 }
 </style>
 </head>
@@ -116,7 +135,7 @@ button {
 <div class="box">
   <h3>Add Chore</h3>
   <input id="name" placeholder="Chore name">
-  <input id="amount" placeholder="Amount">
+  <input id="amount" placeholder="Amount ($)">
   <button onclick="addChore(event)">Add</button>
 </div>
 
@@ -139,7 +158,7 @@ function format(n) {
   return Number(n).toFixed(2);
 }
 
-/* 🔥 RELIABLE IOS FEEL (VISIBLE PRESS) */
+/* PRESS FEEDBACK */
 function press(el) {
   el.classList.add("pressed");
   setTimeout(() => el.classList.remove("pressed"), 120);
@@ -163,7 +182,7 @@ function render() {
         <div class="value">$${format(c.amount)}</div>
       </div>
 
-      <div>
+      <div class="actions">
         <button onclick="press(this); add(${i})">+</button>
         <button onclick="press(this); remove(${i})">-</button>
         <button onclick="press(this); deleteChore(${i})">Delete</button>
@@ -218,7 +237,7 @@ function deleteChore(i) {
 function resetDay(e) {
   press(e.target);
 
-  if (!confirm("Reset everything?")) return;
+  if (!confirm("Reset everything for today?")) return;
 
   balance = 0;
   chores.forEach(c => c.count = 0);
