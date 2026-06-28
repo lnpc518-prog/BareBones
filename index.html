@@ -45,7 +45,7 @@ button {
   transition: transform 90ms ease, opacity 90ms ease;
 }
 
-/* RESET */
+/* RESET BUTTON */
 .reset-btn {
   width: 100%;
   padding: 14px;
@@ -54,7 +54,7 @@ button {
   font-weight: 600;
 }
 
-/* FLOATING + */
+/* FLOATING + BUTTON */
 .floating-add {
   position: fixed;
   top: 15px;
@@ -68,7 +68,7 @@ button {
   box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 
-/* ===== ROW ===== */
+/* ===== ROW LAYOUT ===== */
 
 .chore {
   display: flex;
@@ -99,7 +99,7 @@ button {
   flex-shrink: 0;
 }
 
-/* NAME (SHRINKS CLEANLY) */
+/* NAME (SHRINKS WITHOUT BREAKING LAYOUT) */
 .name {
   flex: 1;
   min-width: 0;
@@ -112,7 +112,7 @@ button {
   text-overflow: ellipsis;
 }
 
-/* RIGHT SIDE (FIXED WIDTH TO PREVENT CUT OFF) */
+/* RIGHT SIDE */
 .right {
   display: flex;
   flex-direction: column;
@@ -120,8 +120,6 @@ button {
   gap: 6px;
 
   flex-shrink: 0;
-
-  /* 🔥 KEY FIX */
   min-width: 120px;
 }
 
@@ -145,7 +143,12 @@ button {
   padding: 8px 10px;
   border-radius: 10px;
   font-size: 14px;
-  white-space: nowrap;
+}
+
+/* OPTIONAL DELETE STYLE (LOOKS CLEAN LIKE IOS) */
+.actions button:last-child {
+  color: #ff3b30;
+  font-weight: 600;
 }
 
 /* PRESS EFFECT */
@@ -222,7 +225,7 @@ function render() {
         <div class="actions">
           <button onclick="press(this); add(${i})">+</button>
           <button onclick="press(this); remove(${i})">-</button>
-          <button onclick="press(this); deleteChore(${i})">Del</button>
+          <button onclick="press(this); deleteChore(${i})">Delete</button>
         </div>
       </div>
     `;
