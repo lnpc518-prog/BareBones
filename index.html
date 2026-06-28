@@ -33,7 +33,7 @@ input {
   box-sizing: border-box;
 }
 
-/* BUTTON */
+/* BUTTON BASE */
 button {
   padding: 10px;
   font-size: 16px;
@@ -45,7 +45,7 @@ button {
   transition: transform 90ms ease, opacity 90ms ease;
 }
 
-/* RESET BUTTON */
+/* RESET */
 .reset-btn {
   width: 100%;
   padding: 14px;
@@ -55,7 +55,7 @@ button {
   font-weight: 600;
 }
 
-/* FLOATING BUTTON */
+/* FLOATING ADD */
 .floating-add {
   position: fixed;
   top: 15px;
@@ -75,18 +75,20 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   padding: 12px;
+  gap: 14px; /* FIX: real breathing room between sections */
+
   border-bottom: 1px solid #eee;
 }
 
-/* LEFT SIDE CONTAINER */
+/* LEFT SIDE */
 .left {
   display: flex;
   gap: 10px;
   align-items: center;
   flex: 1;
   min-width: 0;
-  overflow: hidden; /* critical for shrinking behavior */
 }
 
 /* COUNT */
@@ -97,7 +99,7 @@ button {
   flex-shrink: 0;
 }
 
-/* NAME (NO ELLIPSIS, SHRINKS INSTEAD) */
+/* NAME */
 .name {
   flex: 1;
   min-width: 0;
@@ -108,21 +110,17 @@ button {
 
   white-space: nowrap;
   overflow: hidden;
-  
-  /* no "..." */
-  text-overflow: clip;
 }
 
-/* MONEY */
+/* 💰 MONEY COLUMN (FIXED SPACING FROM BUTTONS) */
 .value {
-  margin-left: auto;
+  margin-left: 18px;  /* KEY FIX: pushes away from actions */
   flex-shrink: 0;
 
   font-size: 14px;
   font-weight: 500;
   color: #3a3a3c;
 
-  padding-left: 10px;
   white-space: nowrap;
 }
 
@@ -130,6 +128,7 @@ button {
 .actions {
   display: flex;
   gap: 6px;
+  margin-left: 6px; /* extra separation from money */
 }
 
 .actions button {
@@ -185,13 +184,11 @@ function format(n) {
   return Number(n).toFixed(2);
 }
 
-/* PRESS */
 function press(el) {
   el.classList.add("pressed");
   setTimeout(() => el.classList.remove("pressed"), 120);
 }
 
-/* RENDER */
 function render() {
   document.getElementById("balance").innerText = format(balance);
 
@@ -220,7 +217,6 @@ function render() {
   });
 }
 
-/* ACTIONS */
 function addChore(e) {
   press(e.target);
 
