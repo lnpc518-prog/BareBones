@@ -33,7 +33,7 @@ input {
   box-sizing: border-box;
 }
 
-/* BUTTON BASE */
+/* BUTTON */
 button {
   padding: 10px;
   font-size: 16px;
@@ -51,11 +51,10 @@ button {
   padding: 14px;
   border-radius: 14px;
   background: #e5e5ea !important;
-  color: #111 !important;
   font-weight: 600;
 }
 
-/* FLOATING ADD */
+/* FLOATING + */
 .floating-add {
   position: fixed;
   top: 15px;
@@ -69,24 +68,25 @@ button {
   box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 
-/* ===== ROW ===== */
+/* ===== ROW STRUCTURE ===== */
 
 .chore {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 
   padding: 12px;
-  gap: 14px; /* FIX: real breathing room between sections */
-
   border-bottom: 1px solid #eee;
+
+  gap: 10px;
 }
 
-/* LEFT SIDE */
+/* LEFT ZONE */
 .left {
   display: flex;
-  gap: 10px;
   align-items: center;
+  gap: 10px;
+
   flex: 1;
   min-width: 0;
 }
@@ -99,36 +99,35 @@ button {
   flex-shrink: 0;
 }
 
-/* NAME */
+/* NAME (NO CUT OFF, NO ELLIPSIS ISSUES) */
 .name {
   flex: 1;
   min-width: 0;
 
   font-size: 15px;
   font-weight: 500;
-  color: #111;
 
   white-space: nowrap;
   overflow: hidden;
 }
 
-/* 💰 MONEY COLUMN (FIXED SPACING FROM BUTTONS) */
+/* 💰 MIDDLE ZONE (FULL CONTROLLED SPACE) */
 .value {
-  margin-left: 18px;  /* KEY FIX: pushes away from actions */
   flex-shrink: 0;
 
   font-size: 14px;
   font-weight: 500;
   color: #3a3a3c;
 
+  padding: 0 14px; /* KEY FIX: breathing room */
   white-space: nowrap;
 }
 
-/* ACTIONS */
+/* RIGHT ZONE */
 .actions {
   display: flex;
   gap: 6px;
-  margin-left: 6px; /* extra separation from money */
+  flex-shrink: 0;
 }
 
 .actions button {
@@ -137,7 +136,7 @@ button {
   font-size: 14px;
 }
 
-/* PRESS EFFECT */
+/* PRESS FEEDBACK */
 .pressed {
   transform: scale(0.94);
   opacity: 0.6;
@@ -189,6 +188,7 @@ function press(el) {
   setTimeout(() => el.classList.remove("pressed"), 120);
 }
 
+/* RENDER */
 function render() {
   document.getElementById("balance").innerText = format(balance);
 
@@ -203,13 +203,14 @@ function render() {
       <div class="left">
         <div class="count">${c.count || 0}</div>
         <div class="name">${c.name}</div>
-        <div class="value">$${format(c.amount)}</div>
       </div>
+
+      <div class="value">$${format(c.amount)}</div>
 
       <div class="actions">
         <button onclick="press(this); add(${i})">+</button>
         <button onclick="press(this); remove(${i})">-</button>
-        <button onclick="press(this); deleteChore(${i})">Delete</button>
+        <button onclick="press(this); deleteChore(${i})">Del</button>
       </div>
     `;
 
@@ -217,6 +218,7 @@ function render() {
   });
 }
 
+/* ACTIONS */
 function addChore(e) {
   press(e.target);
 
