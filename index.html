@@ -19,7 +19,6 @@ h2 {
   font-weight: 600;
 }
 
-/* CARD STYLE */
 .box {
   background: white;
   padding: 15px;
@@ -41,7 +40,7 @@ input {
   outline: none;
 }
 
-/* GENERAL BUTTON */
+/* 🍏 BUTTON BASE */
 button {
   padding: 10px;
   font-size: 16px;
@@ -49,17 +48,21 @@ button {
   border-radius: 10px;
   background: #e5e5ea;
   color: #111;
+
   -webkit-tap-highlight-color: transparent;
-  transition: all 0.12s ease;
+
+  /* smoother feel */
+  transition: transform 0.08s ease, opacity 0.12s ease, background 0.12s ease;
 }
 
-/* TAP FEEL */
+/* 🔥 REAL PRESS FEEDBACK */
 button:active {
   transform: scale(0.96);
-  opacity: 0.8;
+  opacity: 0.55;
+  background: #d1d1d6;
 }
 
-/* 🍏 iOS STYLE PRIMARY BUTTON (RESET) */
+/* 🍎 iOS STYLE RESET BUTTON */
 .reset-btn {
   width: 100%;
   display: block;
@@ -87,7 +90,7 @@ button:active {
   box-shadow: 0 2px 8px rgba(0,0,0,0.12);
 }
 
-/* CHORES */
+/* chores */
 .chore {
   display: flex;
   justify-content: space-between;
