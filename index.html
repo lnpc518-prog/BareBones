@@ -46,17 +46,16 @@ button {
   border-radius: 10px;
   background: #e5e5ea;
   color: #111;
-
   -webkit-tap-highlight-color: transparent;
 
-  transition: transform 0.12s ease, opacity 0.12s ease, background 0.12s ease;
+  transition: transform 0.06s ease, opacity 0.06s ease, background 0.06s ease;
 }
 
-/* REAL PRESS FEEDBACK CLASS */
-button.pressed {
-  transform: scale(0.95);
-  opacity: 0.55;
-  background: #d1d1d6;
+/* REAL PRESS STATE (VISIBLE ON IOS) */
+button.is-pressed {
+  transform: scale(0.94);
+  opacity: 0.5;
+  background: #c7c7cc;
 }
 
 /* RESET BUTTON (iOS STYLE) */
@@ -159,7 +158,7 @@ button.pressed {
 let balance = 0;
 let chores = [];
 
-/* SAVE / LOAD */
+/* STORAGE */
 function save() {
   localStorage.setItem("balance", balance);
   localStorage.setItem("chores", JSON.stringify(chores));
@@ -170,7 +169,6 @@ function load() {
   chores = JSON.parse(localStorage.getItem("chores")) || [];
 }
 
-/* FORMAT */
 function format(n) {
   return Number(n).toFixed(2);
 }
@@ -201,6 +199,11 @@ function render() {
     `;
 
     list.appendChild(div);
+  });
+
+  /* IMPORTANT: re-attach press feedback every render */
+  requestAnimationFrame(() => {
+    document.querySelectorAll("button").forEach(addPressFeedback);
   });
 }
 
@@ -259,20 +262,23 @@ function focusAdd() {
   document.getElementById("name").focus();
 }
 
-/* 🔥 REAL TOUCH FEEDBACK (iPhone FIX) */
-document.addEventListener("touchstart", function (e) {
-  if (e.target.tagName === "BUTTON") {
-    e.target.classList.add("pressed");
-  }
-}, { passive: true });
+/* 🔥 REAL IOS PRESS FEEDBACK (FIXED) */
+function addPressFeedback(el) {
+  if (el.dataset.bound === "true") return;
+  el.dataset.bound = "true";
 
-document.addEventListener("touchend", function (e) {
-  if (e.target.tagName === "BUTTON") {
-    setTimeout(() => {
-      e.target.classList.remove("pressed");
-    }, 120);
-  }
-});
+  el.addEventListener("pointerdown", () => {
+    el.classList.add("is-pressed");
+  });
+
+  const remove = () => {
+    el.classList.remove("is-pressed");
+  };
+
+  el.addEventListener("pointerup", remove);
+  el.addEventListener("pointercancel", remove);
+  el.addEventListener("pointerleave", remove);
+}
 
 /* INIT */
 load();
