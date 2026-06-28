@@ -10,8 +10,8 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   margin: 20px;
   background: #f2f2f7;
-  touch-action: manipulation;
   color: #111;
+  touch-action: manipulation;
 }
 
 h2 {
@@ -38,7 +38,7 @@ input {
   box-sizing: border-box;
 }
 
-/* BUTTON BASE */
+/* ✅ FIXED: RELIABLE IOS PRESS FEEDBACK */
 button {
   padding: 10px;
   font-size: 16px;
@@ -46,19 +46,23 @@ button {
   border-radius: 10px;
   background: #e5e5ea;
   color: #111;
+
   -webkit-tap-highlight-color: transparent;
 
-  transition: transform 0.06s ease, opacity 0.06s ease, background 0.06s ease;
+  /* IMPORTANT: forces iOS repaint so active state is visible */
+  transform: translateZ(0);
+
+  transition: transform 0.08s ease, opacity 0.08s ease, background 0.08s ease;
 }
 
-/* REAL PRESS STATE (VISIBLE ON IOS) */
-button.is-pressed {
+/* 🔥 THIS IS THE KEY */
+button:active {
   transform: scale(0.94);
   opacity: 0.5;
   background: #c7c7cc;
 }
 
-/* RESET BUTTON (iOS STYLE) */
+/* RESET BUTTON */
 .reset-btn {
   width: 100%;
   display: block;
@@ -71,7 +75,7 @@ button.is-pressed {
   box-shadow: 0 4px 10px rgba(255, 59, 48, 0.25);
 }
 
-/* floating add button */
+/* floating add */
 .floating-add {
   position: fixed;
   top: 15px;
@@ -80,17 +84,14 @@ button.is-pressed {
   height: 50px;
   border-radius: 50%;
   font-size: 22px;
-  background: #ffffff;
+  background: #fff;
   border: 1px solid #ddd;
-  z-index: 9999;
   box-shadow: 0 2px 8px rgba(0,0,0,0.12);
 }
 
-/* chores */
 .chore {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   padding: 12px;
   border-bottom: 1px solid #eee;
   gap: 10px;
@@ -98,21 +99,18 @@ button.is-pressed {
 
 .left {
   display: flex;
-  align-items: center;
   gap: 10px;
   flex: 1;
-  min-width: 0;
 }
 
 .count {
   width: 30px;
-  font-weight: 600;
   text-align: center;
+  font-weight: 600;
 }
 
 .name {
   flex: 1;
-  overflow-wrap: anywhere;
 }
 
 .value {
@@ -149,8 +147,8 @@ button.is-pressed {
 
 <div class="box">
   <h3>Add Chore</h3>
-  <input id="name" placeholder="Chore name">
-  <input id="amount" placeholder="Amount ($)">
+  <input id="name">
+  <input id="amount">
   <button onclick="addChore()">Add</button>
 </div>
 
@@ -158,7 +156,6 @@ button.is-pressed {
 let balance = 0;
 let chores = [];
 
-/* STORAGE */
 function save() {
   localStorage.setItem("balance", balance);
   localStorage.setItem("chores", JSON.stringify(chores));
@@ -173,7 +170,6 @@ function format(n) {
   return Number(n).toFixed(2);
 }
 
-/* RENDER */
 function render() {
   document.getElementById("balance").innerText = format(balance);
 
@@ -200,14 +196,8 @@ function render() {
 
     list.appendChild(div);
   });
-
-  /* IMPORTANT: re-attach press feedback every render */
-  requestAnimationFrame(() => {
-    document.querySelectorAll("button").forEach(addPressFeedback);
-  });
 }
 
-/* ACTIONS */
 function addChore() {
   const name = document.getElementById("name").value;
   const amount = parseFloat(document.getElementById("amount").value);
@@ -262,25 +252,6 @@ function focusAdd() {
   document.getElementById("name").focus();
 }
 
-/* 🔥 REAL IOS PRESS FEEDBACK (FIXED) */
-function addPressFeedback(el) {
-  if (el.dataset.bound === "true") return;
-  el.dataset.bound = "true";
-
-  el.addEventListener("pointerdown", () => {
-    el.classList.add("is-pressed");
-  });
-
-  const remove = () => {
-    el.classList.remove("is-pressed");
-  };
-
-  el.addEventListener("pointerup", remove);
-  el.addEventListener("pointercancel", remove);
-  el.addEventListener("pointerleave", remove);
-}
-
-/* INIT */
 load();
 render();
 </script>
