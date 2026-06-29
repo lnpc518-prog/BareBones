@@ -463,7 +463,7 @@ function updateUI() {
   historyList.innerHTML = "";
 
   activity
-    .filter(entry => entry.day !== today)
+    .filter(entry => entry.archived)
     .slice()
     .reverse()
     .forEach(entry => {
