@@ -537,7 +537,9 @@ function deleteChore(i) {
 }
 
 function resetDay() {
-  let confirmed = confirm("Reset today? This will set balance and all counts back to 0.");
+  let confirmed = confirm(
+  "End today?\n\nToday's activity will be moved to History.\nToday's chore counts will reset to 0.\n\nYou'll be able to edit today's archived activity later from History."
+);
   if (!confirmed) return;
 
   balance = 0;
