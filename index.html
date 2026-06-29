@@ -444,10 +444,15 @@ function logChore(i) {
   chores[i].count = (chores[i].count || 0) + 1;
   balance += chores[i].amount;
 
+  activity.push({
+    chore: chores[i].name,
+    amount: chores[i].amount,
+    time: new Date().toISOString()
+  });
+
   saveData();
   updateUI();
 }
-
 function undoChore(i) {
   if ((chores[i].count || 0) > 0) {
     chores[i].count -= 1;
