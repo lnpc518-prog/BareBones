@@ -423,6 +423,15 @@ function updateUI() {
     list.appendChild(div);
     shrinkName(div.querySelector(".name"));
     addSwipeDelete(div, i);
+  });   
+  
+  let activityList = document.getElementById("activityList");
+  activityList.innerHTML = "";
+
+  activity.slice().reverse().forEach(entry => {
+    let item = document.createElement("div");
+    item.innerHTML = `✓ ${entry.chore} — $${formatMoney(entry.amount)}`;
+    activityList.appendChild(item);
   });
 }
 
