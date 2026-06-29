@@ -251,8 +251,8 @@
   
 <div class="box">
   <h3 onclick="toggleHistory()" style="cursor: pointer;">
-    ▶ History
-  </h3>
+  › History
+</h3>
   <div id="historyList" style="display: none;"></div>
 </div>
   
@@ -408,10 +408,10 @@ function toggleHistory() {
 
   if (historyList.style.display === "none") {
     historyList.style.display = "block";
-    historyHeader.innerText = "▼ History";
+    historyHeader.innerText = "⌄ History";
   } else {
     historyList.style.display = "none";
-    historyHeader.innerText = "▶ History";
+    historyHeader.innerText = "› History";
   }
 }
   
