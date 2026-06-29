@@ -451,7 +451,7 @@ function updateUI() {
     const today = new Date().toDateString();
 
   activity
-    .filter(entry => entry.day === today)
+    .filter(entry => entry.day === today && !entry.archived)
     .slice()
     .reverse()
     .forEach(entry => {
