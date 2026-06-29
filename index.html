@@ -478,12 +478,14 @@ function undoChore(i) {
     chores[i].count -= 1;
     balance -= chores[i].amount;
 
-    for (let j = activity.length - 1; j >= 0; j--) {
-      if (activity[j].chore === chores[i].name) {
-        activity.splice(j, 1);
-        break;
-      }
-    }
+    const today = new Date().toDateString();
+
+for (let j = activity.length - 1; j >= 0; j--) {
+  if (activity[j].chore === chores[i].name && activity[j].day === today) {
+    activity.splice(j, 1);
+    break;
+  }
+}
   }
 
   saveData();
