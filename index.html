@@ -444,6 +444,18 @@ function updateUI() {
       item.innerHTML = `✓ ${entry.chore} — $${formatMoney(entry.amount)}`;
       activityList.appendChild(item);
     });
+    let historyList = document.getElementById("historyList");
+  historyList.innerHTML = "";
+
+  activity
+    .filter(entry => entry.day !== today)
+    .slice()
+    .reverse()
+    .forEach(entry => {
+      let item = document.createElement("div");
+      item.innerHTML = `${entry.day}: ✓ ${entry.chore} — $${formatMoney(entry.amount)}`;
+      historyList.appendChild(item);
+    });
 }
 
 function focusAdd() {
