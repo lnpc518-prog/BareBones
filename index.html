@@ -501,6 +501,7 @@ function resetDay() {
 
   balance = 0;
   chores.forEach(c => c.count = 0);
+  activity = [];
 
   saveData();
   updateUI();
