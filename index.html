@@ -80,9 +80,8 @@
       padding: 12px;
       border-bottom: 1px solid #eee;
       border-radius: 10px;
-      transition: transform .15s ease, background .15s ease, opacity .15s ease;
       background: white;
-      position: relative;
+      transition: transform .15s ease, background .15s ease;
     }
 
     .chore,
@@ -95,13 +94,6 @@
       background: #fff1f1;
     }
 
-    .chore.dragging {
-      opacity: .9;
-      background: #ffffff;
-      z-index: 999;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.18);
-    }
-
     .handle {
       width: 28px;
       flex-shrink: 0;
@@ -110,7 +102,6 @@
       background: transparent;
       color: #777;
       margin-top: 0;
-      touch-action: none;
       user-select: none;
       -webkit-user-select: none;
     }
@@ -235,13 +226,6 @@
 let balance = 0;
 let chores = [];
 
-let dragTimer = null;
-let draggingRow = null;
-let draggingIndex = null;
-let dragStartY = 0;
-let dragCurrentY = 0;
-let didDrag = false;
-
 function press(btn) {
   btn.classList.add("pressed");
   setTimeout(() => {
@@ -339,105 +323,6 @@ function moveChoreDown(i) {
   updateUI();
 }
 
-function startDrag(i, row, y) {
-  didDrag = true;
-  draggingRow = row;
-  draggingIndex = i;
-  dragStartY = y;
-  dragCurrentY = y;
-
-  row.classList.add("dragging");
-}
-
-function finishDrag() {
-  if (!draggingRow || draggingIndex === null) return;
-
-  let diff = dragCurrentY - dragStartY;
-  let rowHeight = draggingRow.offsetHeight || 55;
-
-  let moveBy = Math.round(diff / rowHeight);
-  let newIndex = draggingIndex + moveBy;
-
-  if (newIndex < 0) newIndex = 0;
-  if (newIndex > chores.length - 1) newIndex = chores.length - 1;
-
-  draggingRow.classList.remove("dragging");
-  draggingRow.style.transform = "";
-
-  if (newIndex !== draggingIndex) {
-    let moved = chores.splice(draggingIndex, 1)[0];
-    chores.splice(newIndex, 0, moved);
-    saveData();
-  }
-
-  draggingRow = null;
-  draggingIndex = null;
-  dragStartY = 0;
-  dragCurrentY = 0;
-
-  updateUI();
-}
-
-function cancelDragTimer() {
-  if (dragTimer) {
-    clearTimeout(dragTimer);
-    dragTimer = null;
-  }
-}
-
-function addHandleEvents(handle, row, i) {
-  handle.addEventListener("touchstart", function(e) {
-    didDrag = false;
-
-    let y = e.touches[0].clientY;
-    dragStartY = y;
-    dragCurrentY = y;
-
-    dragTimer = setTimeout(() => {
-      startDrag(i, row, y);
-    }, 450);
-  }, { passive: true });
-
-  handle.addEventListener("touchmove", function(e) {
-    let y = e.touches[0].clientY;
-
-    if (dragTimer && draggingRow === null) {
-      if (Math.abs(y - dragStartY) > 10) {
-        cancelDragTimer();
-      }
-    }
-
-    if (draggingRow !== null) {
-      e.preventDefault();
-      dragCurrentY = y;
-
-      let diff = dragCurrentY - dragStartY;
-      draggingRow.style.transform = `translateY(${diff}px) scale(1.02)`;
-    }
-  }, { passive: false });
-
-  handle.addEventListener("touchend", function() {
-    cancelDragTimer();
-
-    if (draggingRow !== null) {
-      finishDrag();
-      return;
-    }
-
-    if (!didDrag) {
-      openMoveMenu(i);
-    }
-  });
-
-  handle.addEventListener("touchcancel", function() {
-    cancelDragTimer();
-
-    if (draggingRow !== null) {
-      finishDrag();
-    }
-  });
-}
-
 function addSwipeDelete(row, i) {
   let startX = 0;
   let currentX = 0;
@@ -452,7 +337,7 @@ function addSwipeDelete(row, i) {
   }, { passive: true });
 
   row.addEventListener("touchmove", function(e) {
-    if (!swiping || draggingRow !== null) return;
+    if (!swiping) return;
 
     currentX = e.touches[0].clientX;
     let diff = currentX - startX;
@@ -491,7 +376,7 @@ function updateUI() {
     div.className = "chore";
 
     div.innerHTML = `
-      <button class="handle">☰</button>
+      <button class="handle" onclick="press(this); openMoveMenu(${i})">☰</button>
 
       <div class="left">
         <div class="count">${c.count || 0}</div>
@@ -506,10 +391,8 @@ function updateUI() {
     `;
 
     list.appendChild(div);
-
     shrinkName(div.querySelector(".name"));
     addSwipeDelete(div, i);
-    addHandleEvents(div.querySelector(".handle"), div, i);
   });
 }
 
