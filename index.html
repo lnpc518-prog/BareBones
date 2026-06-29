@@ -293,8 +293,8 @@ function openMoveMenu(i) {
   backdrop.innerHTML = `
     <div class="menu">
       <div class="menu-grabber"></div>
-      <button onclick="moveChoreUp(${i})">˄</button>
-      <button onclick="moveChoreDown(${i})">˅</button>
+      <button onclick="moveChoreUp(${i})"><span>˄</span></button>
+<button onclick="moveChoreDown(${i})"><span>˅</span></button>
       <button class="cancel-btn" onclick="closeMoveMenu()">Cancel</button>
     </div>
   `;
