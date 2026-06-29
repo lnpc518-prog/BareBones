@@ -177,22 +177,34 @@
       background: white;
       width: 100%;
       max-width: 420px;
-      border-radius: 16px;
+      border-radius: 22px;
       padding: 10px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+
+    .menu-grabber {
+      width: 48px;
+      height: 5px;
+      background: #d8d8d8;
+      border-radius: 99px;
+      margin: 4px auto 12px;
     }
 
     .menu button {
       width: 100%;
       display: block;
       margin: 6px 0;
-      padding: 14px;
-      font-size: 17px;
-      border-radius: 12px;
+      padding: 16px;
+      font-size: 28px;
+      border-radius: 14px;
+      line-height: 1;
     }
 
     .cancel-btn {
+      margin-top: 18px !important;
+      font-size: 18px !important;
       font-weight: bold;
+      padding: 16px !important;
     }
   </style>
 </head>
@@ -275,8 +287,9 @@ function openMoveMenu(i) {
 
   backdrop.innerHTML = `
     <div class="menu">
-      <button onclick="moveChoreUp(${i})">⬆️ Move Up</button>
-      <button onclick="moveChoreDown(${i})">⬇️ Move Down</button>
+      <div class="menu-grabber"></div>
+      <button onclick="moveChoreUp(${i})">⌃</button>
+      <button onclick="moveChoreDown(${i})">⌄</button>
       <button class="cancel-btn" onclick="closeMoveMenu()">Cancel</button>
     </div>
   `;
