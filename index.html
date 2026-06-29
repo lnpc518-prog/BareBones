@@ -80,7 +80,7 @@
       padding: 12px;
       border-bottom: 1px solid #eee;
       border-radius: 10px;
-      transition: transform .18s ease, background .18s ease, opacity .18s ease;
+      transition: transform .15s ease, background .15s ease, opacity .15s ease;
       background: white;
       position: relative;
     }
@@ -96,19 +96,10 @@
     }
 
     .chore.dragging {
-      opacity: .95;
+      opacity: .9;
       background: #ffffff;
       z-index: 999;
       box-shadow: 0 8px 18px rgba(0,0,0,0.18);
-      transform: scale(1.02);
-    }
-
-    .placeholder {
-      height: 0;
-      border-radius: 10px;
-      background: #f0f0f0;
-      margin: 4px 0;
-      transition: height .18s ease;
     }
 
     .handle {
@@ -247,10 +238,8 @@ let chores = [];
 let dragTimer = null;
 let draggingRow = null;
 let draggingIndex = null;
-let placeholder = null;
-let startY = 0;
-let currentY = 0;
-let rowHeight = 0;
+let dragStartY = 0;
+let dragCurrentY = 0;
 let didDrag = false;
 
 function press(btn) {
@@ -350,81 +339,41 @@ function moveChoreDown(i) {
   updateUI();
 }
 
-function startSmoothDrag(i, row, y) {
+function startDrag(i, row, y) {
   didDrag = true;
   draggingRow = row;
   draggingIndex = i;
-  startY = y;
-  currentY = y;
-  rowHeight = row.offsetHeight;
-
-  placeholder = document.createElement("div");
-  placeholder.className = "placeholder";
-  placeholder.style.height = rowHeight + "px";
-
-  row.parentNode.insertBefore(placeholder, row.nextSibling);
+  dragStartY = y;
+  dragCurrentY = y;
 
   row.classList.add("dragging");
-  row.style.position = "relative";
-  row.style.width = "100%";
 }
 
-function updatePlaceholderPosition(y) {
-  if (!draggingRow || !placeholder) return;
+function finishDrag() {
+  if (!draggingRow || draggingIndex === null) return;
 
-  const list = document.getElementById("choreList");
-  const rows = Array.from(list.querySelectorAll(".chore:not(.dragging)"));
+  let diff = dragCurrentY - dragStartY;
+  let rowHeight = draggingRow.offsetHeight || 55;
 
-  let inserted = false;
+  let moveBy = Math.round(diff / rowHeight);
+  let newIndex = draggingIndex + moveBy;
 
-  for (let row of rows) {
-    const rect = row.getBoundingClientRect();
-    const middle = rect.top + rect.height / 2;
-
-    if (y < middle) {
-      list.insertBefore(placeholder, row);
-      inserted = true;
-      break;
-    }
-  }
-
-  if (!inserted) {
-    list.appendChild(placeholder);
-  }
-}
-
-function finishSmoothDrag() {
-  if (!draggingRow || !placeholder) return;
-
-  const list = document.getElementById("choreList");
-  const allSlots = Array.from(list.children);
-  let newIndex = allSlots.indexOf(placeholder);
-
-  if (newIndex < 0) newIndex = draggingIndex;
-
-  let moved = chores.splice(draggingIndex, 1)[0];
-
-  if (newIndex > draggingIndex) {
-    newIndex = newIndex - 1;
-  }
-
-  chores.splice(newIndex, 0, moved);
-
-  saveData();
+  if (newIndex < 0) newIndex = 0;
+  if (newIndex > chores.length - 1) newIndex = chores.length - 1;
 
   draggingRow.classList.remove("dragging");
   draggingRow.style.transform = "";
-  draggingRow.style.position = "";
-  draggingRow.style.width = "";
 
-  placeholder.remove();
+  if (newIndex !== draggingIndex) {
+    let moved = chores.splice(draggingIndex, 1)[0];
+    chores.splice(newIndex, 0, moved);
+    saveData();
+  }
 
   draggingRow = null;
   draggingIndex = null;
-  placeholder = null;
-  startY = 0;
-  currentY = 0;
-  rowHeight = 0;
+  dragStartY = 0;
+  dragCurrentY = 0;
 
   updateUI();
 }
@@ -439,11 +388,13 @@ function cancelDragTimer() {
 function addHandleEvents(handle, row, i) {
   handle.addEventListener("touchstart", function(e) {
     didDrag = false;
+
     let y = e.touches[0].clientY;
-    startY = y;
+    dragStartY = y;
+    dragCurrentY = y;
 
     dragTimer = setTimeout(() => {
-      startSmoothDrag(i, row, y);
+      startDrag(i, row, y);
     }, 450);
   }, { passive: true });
 
@@ -451,19 +402,17 @@ function addHandleEvents(handle, row, i) {
     let y = e.touches[0].clientY;
 
     if (dragTimer && draggingRow === null) {
-      if (Math.abs(y - startY) > 10) {
+      if (Math.abs(y - dragStartY) > 10) {
         cancelDragTimer();
       }
     }
 
     if (draggingRow !== null) {
       e.preventDefault();
-      currentY = y;
+      dragCurrentY = y;
 
-      let diff = currentY - startY;
+      let diff = dragCurrentY - dragStartY;
       draggingRow.style.transform = `translateY(${diff}px) scale(1.02)`;
-
-      updatePlaceholderPosition(currentY);
     }
   }, { passive: false });
 
@@ -471,7 +420,7 @@ function addHandleEvents(handle, row, i) {
     cancelDragTimer();
 
     if (draggingRow !== null) {
-      finishSmoothDrag();
+      finishDrag();
       return;
     }
 
@@ -484,7 +433,7 @@ function addHandleEvents(handle, row, i) {
     cancelDragTimer();
 
     if (draggingRow !== null) {
-      finishSmoothDrag();
+      finishDrag();
     }
   });
 }
