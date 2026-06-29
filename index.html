@@ -250,8 +250,10 @@
 </div>
   
 <div class="box">
-  <h3>History</h3>
-  <div id="historyList"></div>
+  <h3 onclick="toggleHistory()" style="cursor: pointer;">
+    ▶ History
+  </h3>
+  <div id="historyList" style="display: none;"></div>
 </div>
   
 <script>
@@ -399,7 +401,20 @@ function addSwipeDelete(row, i) {
     }
   });
 }
+  
+function toggleHistory() {
+  let historyList = document.getElementById("historyList");
+  let historyHeader = historyList.previousElementSibling;
 
+  if (historyList.style.display === "none") {
+    historyList.style.display = "block";
+    historyHeader.innerText = "▼ History";
+  } else {
+    historyList.style.display = "none";
+    historyHeader.innerText = "▶ History";
+  }
+}
+  
 function updateUI() {
   document.getElementById("balance").innerText = formatMoney(balance);
 
