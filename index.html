@@ -457,6 +457,13 @@ function undoChore(i) {
   if ((chores[i].count || 0) > 0) {
     chores[i].count -= 1;
     balance -= chores[i].amount;
+
+    for (let j = activity.length - 1; j >= 0; j--) {
+      if (activity[j].chore === chores[i].name) {
+        activity.splice(j, 1);
+        break;
+      }
+    }
   }
 
   saveData();
