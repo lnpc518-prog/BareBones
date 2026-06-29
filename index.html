@@ -428,11 +428,17 @@ function updateUI() {
   let activityList = document.getElementById("activityList");
   activityList.innerHTML = "";
 
-  activity.slice().reverse().forEach(entry => {
-    let item = document.createElement("div");
-    item.innerHTML = `✓ ${entry.chore} — $${formatMoney(entry.amount)}`;
-    activityList.appendChild(item);
-  });
+    const today = new Date().toDateString();
+
+  activity
+    .filter(entry => entry.day === today)
+    .slice()
+    .reverse()
+    .forEach(entry => {
+      let item = document.createElement("div");
+      item.innerHTML = `✓ ${entry.chore} — $${formatMoney(entry.amount)}`;
+      activityList.appendChild(item);
+    });
 }
 
 function focusAdd() {
