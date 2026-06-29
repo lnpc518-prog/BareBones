@@ -499,7 +499,8 @@ function logChore(i) {
   activity.push({
   chore: chores[i].name,
   amount: chores[i].amount,
-  day: new Date().toDateString()
+  day: new Date().toDateString(),
+  archived: false
 });
 
   saveData();
