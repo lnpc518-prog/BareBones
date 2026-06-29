@@ -459,10 +459,10 @@ function logChore(i) {
   balance += chores[i].amount;
 
   activity.push({
-    chore: chores[i].name,
-    amount: chores[i].amount,
-    time: new Date().toISOString()
-  });
+  chore: chores[i].name,
+  amount: chores[i].amount,
+  day: new Date().toDateString()
+});
 
   saveData();
   updateUI();
