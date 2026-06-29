@@ -81,6 +81,12 @@
       padding: 12px;
       border-bottom: 1px solid #eee;
       border-radius: 10px;
+      transition: transform .15s ease, background .15s ease;
+      background: white;
+    }
+
+    .chore.swiping {
+      background: #fff1f1;
     }
 
     .left {
@@ -117,12 +123,6 @@
       display: flex;
       gap: 5px;
       flex-shrink: 0;
-    }
-
-    .trash-btn {
-      font-size: 18px;
-      padding: 8px;
-      line-height: 1;
     }
 
     .floating-add {
@@ -211,6 +211,46 @@ function shrinkName(el) {
   }
 }
 
+function addSwipeDelete(row, i) {
+  let startX = 0;
+  let currentX = 0;
+  let swiping = false;
+
+  row.addEventListener("touchstart", function(e) {
+    startX = e.touches[0].clientX;
+    currentX = startX;
+    swiping = true;
+  }, { passive: true });
+
+  row.addEventListener("touchmove", function(e) {
+    if (!swiping) return;
+
+    currentX = e.touches[0].clientX;
+    let diff = currentX - startX;
+
+    if (diff < 0) {
+      e.preventDefault();
+      let move = Math.max(diff, -90);
+      row.style.transform = `translateX(${move}px)`;
+      row.classList.add("swiping");
+    }
+  }, { passive: false });
+
+  row.addEventListener("touchend", function() {
+    if (!swiping) return;
+
+    let diff = currentX - startX;
+    swiping = false;
+
+    row.style.transform = "translateX(0)";
+    row.classList.remove("swiping");
+
+    if (diff < -80) {
+      deleteChore(i);
+    }
+  });
+}
+
 function updateUI() {
   document.getElementById("balance").innerText = formatMoney(balance);
 
@@ -231,12 +271,12 @@ function updateUI() {
       <div class="actions">
         <button onclick="pressAndRun(this, function(){ logChore(${i}); })">+</button>
         <button onclick="pressAndRun(this, function(){ undoChore(${i}); })">-</button>
-        <button class="trash-btn" onclick="pressAndRun(this, function(){ deleteChore(${i}); })">🗑️</button>
       </div>
     `;
 
     list.appendChild(div);
     shrinkName(div.querySelector(".name"));
+    addSwipeDelete(div, i);
   });
 }
 
