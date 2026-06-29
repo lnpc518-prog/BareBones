@@ -1,164 +1,164 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chore App</title>
 
-<style>
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
-  margin: 20px;
-  background: #f2f2f7;
-  color: #111;
-}
+  <!-- 📱 App / PWA settings -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Chore Money">
 
-/* CARD */
-.box {
-  background: white;
-  padding: 15px;
-  border-radius: 16px;
-  margin-bottom: 15px;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
-}
+  <title>Chore Earnings</title>
 
-/* INPUT */
-input {
-  width: 100%;
-  padding: 12px;
-  margin: 6px 0 10px;
-  font-size: 16px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  box-sizing: border-box;
-}
+  <!-- 📌 App Icon -->
+  <link rel="apple-touch-icon" href="icon.svg">
 
-/* BUTTON BASE */
-button {
-  padding: 10px;
-  font-size: 16px;
-  border: none;
-  border-radius: 10px;
-  background: #e5e5ea;
-  color: #111;
-  -webkit-tap-highlight-color: transparent;
-  transition: transform 90ms ease, opacity 90ms ease;
-}
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f5f5f5;
+      touch-action: manipulation;
+    }
 
-/* RESET */
-.reset-btn {
-  width: 100%;
-  padding: 14px;
-  border-radius: 14px;
-  background: #e5e5ea !important;
-  font-weight: 600;
-}
+    .box {
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
 
-/* FLOATING + */
-.floating-add {
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: white;
-  border: 1px solid #ddd;
-  font-size: 22px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-}
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
 
-/* ===== ROW = CLEAN GRID STYLE ===== */
+    button {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 8px;
+      background: #e9e9e9;
+      color: #222;
+      -webkit-tap-highlight-color: transparent;
+      transition:
+        transform .10s ease,
+        opacity .10s ease,
+        background-color .10s ease,
+        box-shadow .10s ease;
+    }
 
-.chore {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  align-items: center;
+    /* iPhone-style tap animation */
+    .pressed {
+      transform: scale(0.95);
+      opacity: .75;
+      background: #dcdcdc;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,.08);
+    }
 
-  padding: 12px 10px;
-  border-bottom: 1px solid #eee;
-  column-gap: 10px;
-}
+    .header {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-/* LEFT SIDE (COUNT + NAME) */
-.left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-}
+    .top-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
 
-.count {
-  width: 28px;
-  text-align: center;
-  font-weight: 600;
-  flex-shrink: 0;
-}
+    .reset-btn {
+      background: #eeeeee;
+      border: 1px solid #ddd;
+    }
 
-.name {
-  font-size: 15px;
-  font-weight: 500;
+    .chore {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+      border-radius: 10px;
+    }
 
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    .left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+    }
 
-  min-width: 0;
-}
+    .count {
+      width: 35px;
+      text-align: center;
+      font-weight: bold;
+    }
 
-/* MONEY COLUMN */
-.value {
-  font-size: 14px;
-  font-weight: 500;
-  color: #3a3a3c;
+    .name {
+      flex: 1;
+      overflow-wrap: anywhere;
+    }
 
-  white-space: nowrap;
-  text-align: right;
-  min-width: 60px;
-}
+    .value {
+      font-size: 14px;
+      color: #444;
+    }
 
-/* ACTIONS COLUMN */
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+    .actions {
+      display: flex;
+      gap: 5px;
+    }
 
-/* BUTTONS (FIXED SIZE FOR ALIGNMENT) */
-.actions button {
-  width: 34px;
-  height: 34px;
-  padding: 0;
-  border-radius: 10px;
-  font-size: 14px;
+    .trash-btn {
+      font-size: 18px;
+      padding: 8px;
+      line-height: 1;
+    }
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* TRASH ICON STYLE */
-.actions button:last-child {
-  background: transparent;
-  color: #ff3b30;
-  font-size: 16px;
-}
-
-/* PRESS EFFECT */
-.pressed {
-  transform: scale(0.94);
-  opacity: 0.6;
-}
-</style>
+    .floating-add {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 22px;
+      padding: 0;
+      z-index: 9999;
+      background: #e9e9e9;
+      color: #222;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+  </style>
 </head>
 
 <body>
 
-<button class="floating-add" onclick="focusAdd()">+</button>
+<button class="floating-add" onclick="press(this); focusAdd()">+</button>
 
 <div class="box">
-  <h2>Balance: $<span id="balance">0.00</span></h2>
-  <button class="reset-btn" onclick="resetDay(event)">Reset Day</button>
+  <div class="header">
+    <div class="top-row">
+      <h2>Balance: $<span id="balance">0.00</span></h2>
+    </div>
+
+    <button class="reset-btn"
+            onclick="press(this); resetDay()">
+      Reset Day
+    </button>
+  </div>
 </div>
 
 <div class="box">
@@ -168,56 +168,66 @@ button {
 
 <div class="box">
   <h3>Add Chore</h3>
+
   <input id="name" placeholder="Chore name">
+
   <input id="amount" placeholder="Amount ($)">
-  <button onclick="addChore(event)">Add</button>
+
+  <button onclick="press(this); addChore()">
+    Add
+  </button>
 </div>
 
 <script>
+
 let balance = 0;
 let chores = [];
 
-function save() {
+function press(btn){
+  btn.classList.add("pressed");
+  setTimeout(()=>{
+    btn.classList.remove("pressed");
+  },120);
+}
+
+function loadData() {
+  const savedBalance = localStorage.getItem("balance");
+  const savedChores = localStorage.getItem("chores");
+
+  balance = savedBalance !== null ? parseFloat(savedBalance) : 0;
+  chores = savedChores !== null ? JSON.parse(savedChores) : [];
+}
+
+function saveData() {
   localStorage.setItem("balance", balance);
   localStorage.setItem("chores", JSON.stringify(chores));
 }
 
-function load() {
-  balance = parseFloat(localStorage.getItem("balance")) || 0;
-  chores = JSON.parse(localStorage.getItem("chores")) || [];
-}
-
-function format(n) {
+function formatMoney(n) {
   return Number(n).toFixed(2);
 }
 
-function press(el) {
-  el.classList.add("pressed");
-  setTimeout(() => el.classList.remove("pressed"), 120);
-}
+function updateUI() {
+  document.getElementById("balance").innerText = formatMoney(balance);
 
-function render() {
-  document.getElementById("balance").innerText = format(balance);
-
-  const list = document.getElementById("choreList");
+  let list = document.getElementById("choreList");
   list.innerHTML = "";
 
   chores.forEach((c, i) => {
-    const div = document.createElement("div");
+
+    let div = document.createElement("div");
     div.className = "chore";
 
-    div.innerHTML = `
-      <div class="left">
+    div.innerHTML = `      <div class="left">
         <div class="count">${c.count || 0}</div>
         <div class="name">${c.name}</div>
+        <div class="value">$${formatMoney(c.amount)}</div>
       </div>
 
-      <div class="value">$${format(c.amount)}</div>
-
       <div class="actions">
-        <button onclick="press(this); add(${i})">+</button>
-        <button onclick="press(this); remove(${i})">-</button>
-        <button onclick="press(this); deleteChore(${i})">🗑️</button>
+        <button onclick="press(this); logChore(${i})">+</button>
+        <button onclick="press(this); undoChore(${i})">-</button>
+        <button class="trash-btn" onclick="press(this); deleteChore(${i})">🗑️</button>
       </div>
     `;
 
@@ -225,11 +235,13 @@ function render() {
   });
 }
 
-function addChore(e) {
-  press(e.target);
+function focusAdd() {
+  document.getElementById("name").focus();
+}
 
-  const name = document.getElementById("name").value;
-  const amount = parseFloat(document.getElementById("amount").value);
+function addChore() {
+  let name = document.getElementById("name").value;
+  let amount = parseFloat(document.getElementById("amount").value);
 
   if (!name || isNaN(amount)) return;
 
@@ -238,51 +250,53 @@ function addChore(e) {
   document.getElementById("name").value = "";
   document.getElementById("amount").value = "";
 
-  save();
-  render();
+  saveData();
+  updateUI();
 }
 
-function add(i) {
-  chores[i].count++;
+function logChore(i) {
+  chores[i].count = (chores[i].count || 0) + 1;
   balance += chores[i].amount;
-  save();
-  render();
+
+  saveData();
+  updateUI();
 }
 
-function remove(i) {
-  if (chores[i].count > 0) {
-    chores[i].count--;
+function undoChore(i) {
+  if ((chores[i].count || 0) > 0) {
+    chores[i].count -= 1;
     balance -= chores[i].amount;
   }
-  save();
-  render();
+
+  saveData();
+  updateUI();
 }
 
 function deleteChore(i) {
-  if (!confirm("Delete this chore?")) return;
+  let c = chores[i];
+  let confirmed = confirm(`Delete "${c.name}"? This cannot be undone.`);
+  if (!confirmed) return;
+
   chores.splice(i, 1);
-  save();
-  render();
+
+  saveData();
+  updateUI();
 }
 
-function resetDay(e) {
-  press(e.target);
-
-  if (!confirm("Reset everything for today?")) return;
+function resetDay() {
+  let confirmed = confirm("Reset today? This will set balance and all counts back to 0.");
+  if (!confirmed) return;
 
   balance = 0;
   chores.forEach(c => c.count = 0);
 
-  save();
-  render();
+  saveData();
+  updateUI();
 }
 
-function focusAdd() {
-  document.getElementById("name").focus();
-}
+loadData();
+updateUI();
 
-load();
-render();
 </script>
 
 </body>
