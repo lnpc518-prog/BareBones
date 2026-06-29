@@ -274,8 +274,8 @@ function loadData() {
 function saveData() {
   localStorage.setItem("balance", balance);
   localStorage.setItem("chores", JSON.stringify(chores));
+  localStorage.setItem("activity", JSON.stringify(activity));
 }
-
 function formatMoney(n) {
   return Number(n).toFixed(2);
 }
