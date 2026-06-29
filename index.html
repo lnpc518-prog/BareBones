@@ -85,6 +85,12 @@
       position: relative;
     }
 
+    .chore,
+    .chore * {
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
     .chore.swiping {
       background: #fff1f1;
     }
@@ -104,6 +110,8 @@
       color: #777;
       margin-top: 0;
       touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .left {
@@ -366,6 +374,7 @@ function addHandleEvents(handle, row, i) {
   handle.addEventListener("touchstart", function(e) {
     didDrag = false;
     let y = e.touches[0].clientY;
+    dragStartY = y;
 
     dragTimer = setTimeout(() => {
       startDrag(i, row, y);
