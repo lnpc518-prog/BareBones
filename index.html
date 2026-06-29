@@ -264,7 +264,7 @@ function pressAndRun(btn, action) {
 function loadData() {
   const savedBalance = localStorage.getItem("balance");
   const savedChores = localStorage.getItem("chores");
-  const savedActivity = localStorage.getItem("activity");u
+  const savedActivity = localStorage.getItem("activity");
 
   balance = savedBalance !== null ? parseFloat(savedBalance) : 0;
   chores = savedChores !== null ? JSON.parse(savedChores) : [];
