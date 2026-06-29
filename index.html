@@ -80,12 +80,19 @@
       padding: 12px;
       border-bottom: 1px solid #eee;
       border-radius: 10px;
-      transition: transform .15s ease, background .15s ease;
+      transition: transform .15s ease, background .15s ease, opacity .15s ease;
       background: white;
+      position: relative;
     }
 
     .chore.swiping {
       background: #fff1f1;
+    }
+
+    .chore.dragging {
+      opacity: .75;
+      background: #f0f0f0;
+      z-index: 999;
     }
 
     .handle {
@@ -96,6 +103,7 @@
       background: transparent;
       color: #777;
       margin-top: 0;
+      touch-action: none;
     }
 
     .left {
@@ -218,6 +226,12 @@
 let balance = 0;
 let chores = [];
 
+let dragTimer = null;
+let draggingIndex = null;
+let dragStartY = 0;
+let dragCurrentY = 0;
+let didDrag = false;
+
 function press(btn) {
   btn.classList.add("pressed");
   setTimeout(() => {
@@ -315,6 +329,85 @@ function moveChoreDown(i) {
   updateUI();
 }
 
+function startDrag(i, row, y) {
+  draggingIndex = i;
+  dragStartY = y;
+  dragCurrentY = y;
+  didDrag = true;
+  row.classList.add("dragging");
+}
+
+function endDrag(row) {
+  if (draggingIndex === null) return;
+
+  row.classList.remove("dragging");
+
+  let diff = dragCurrentY - dragStartY;
+  let moveBy = Math.round(diff / 55);
+  let newIndex = draggingIndex + moveBy;
+
+  if (newIndex < 0) newIndex = 0;
+  if (newIndex > chores.length - 1) newIndex = chores.length - 1;
+
+  if (newIndex !== draggingIndex) {
+    let moved = chores.splice(draggingIndex, 1)[0];
+    chores.splice(newIndex, 0, moved);
+    saveData();
+  }
+
+  draggingIndex = null;
+  dragStartY = 0;
+  dragCurrentY = 0;
+
+  updateUI();
+}
+
+function addHandleEvents(handle, row, i) {
+  handle.addEventListener("touchstart", function(e) {
+    didDrag = false;
+    let y = e.touches[0].clientY;
+
+    dragTimer = setTimeout(() => {
+      startDrag(i, row, y);
+    }, 450);
+  }, { passive: true });
+
+  handle.addEventListener("touchmove", function(e) {
+    if (dragTimer && draggingIndex === null) {
+      let y = e.touches[0].clientY;
+      if (Math.abs(y - dragStartY) > 10) {
+        clearTimeout(dragTimer);
+        dragTimer = null;
+      }
+    }
+
+    if (draggingIndex !== null) {
+      e.preventDefault();
+      dragCurrentY = e.touches[0].clientY;
+      let diff = dragCurrentY - dragStartY;
+      row.style.transform = `translateY(${diff}px)`;
+    }
+  }, { passive: false });
+
+  handle.addEventListener("touchend", function() {
+    if (dragTimer) {
+      clearTimeout(dragTimer);
+      dragTimer = null;
+    }
+
+    row.style.transform = "";
+
+    if (draggingIndex !== null) {
+      endDrag(row);
+      return;
+    }
+
+    if (!didDrag) {
+      openMoveMenu(i);
+    }
+  });
+}
+
 function addSwipeDelete(row, i) {
   let startX = 0;
   let currentX = 0;
@@ -329,7 +422,7 @@ function addSwipeDelete(row, i) {
   }, { passive: true });
 
   row.addEventListener("touchmove", function(e) {
-    if (!swiping) return;
+    if (!swiping || draggingIndex !== null) return;
 
     currentX = e.touches[0].clientX;
     let diff = currentX - startX;
@@ -368,7 +461,7 @@ function updateUI() {
     div.className = "chore";
 
     div.innerHTML = `
-      <button class="handle" onclick="press(this); openMoveMenu(${i})">☰</button>
+      <button class="handle">☰</button>
 
       <div class="left">
         <div class="count">${c.count || 0}</div>
@@ -383,8 +476,10 @@ function updateUI() {
     `;
 
     list.appendChild(div);
+
     shrinkName(div.querySelector(".name"));
     addSwipeDelete(div, i);
+    addHandleEvents(div.querySelector(".handle"), div, i);
   });
 }
 
