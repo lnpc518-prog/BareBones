@@ -288,6 +288,9 @@ function loadData() {
   activity = savedActivity !== null ? JSON.parse(savedActivity) : [];
   dayEnded = savedDayEnded === "true";
   activeDay = savedActiveDay || new Date().toDateString();
+
+if (!dayEnded && activeDay !== new Date().toDateString()) {
+  activeDay = new Date().toDateString();
 }
 
 function saveData() {
