@@ -476,6 +476,28 @@ function closeHistoryDay() {
   let view = document.getElementById("historyDayView");
   if (view) view.remove();
 }
+
+function deleteHistoryEntry(day, index) {
+  let dayEntries = activity.filter(entry =>
+    entry.archived && entry.day === day
+  );
+
+  let entryToDelete = dayEntries[index];
+  if (!entryToDelete) return;
+
+  let confirmed = confirm(`Delete "${entryToDelete.chore}" from history?`);
+  if (!confirmed) return;
+
+  let realIndex = activity.indexOf(entryToDelete);
+  if (realIndex !== -1) {
+    activity.splice(realIndex, 1);
+  }
+
+  saveData();
+  closeHistoryDay();
+  updateUI();
+  openHistoryDay(day);
+}
   
 function updateUI() {
   document.getElementById("balance").innerText = formatMoney(balance);
