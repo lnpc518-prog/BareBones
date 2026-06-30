@@ -414,6 +414,10 @@ function toggleHistory() {
     historyHeader.innerText = "› History";
   }
 }
+
+  function formatHistoryDay(day) {
+  return day;
+}
   
 function updateUI() {
   document.getElementById("balance").innerText = formatMoney(balance);
@@ -469,11 +473,21 @@ activity
   .forEach(entry => {
 
     if (entry.day !== lastDay) {
-      let heading = document.createElement("h4");
-      heading.textContent = entry.day;
-      historyList.appendChild(heading);
-      lastDay = entry.day;
-    }
+
+  let dayEntries = activity.filter(a =>
+    a.archived && a.day === entry.day
+  );
+
+  let total = dayEntries.reduce((sum, a) => sum + a.amount, 0);
+
+  let heading = document.createElement("h4");
+  heading.innerHTML =
+    `${formatHistoryDay(entry.day)}<br><small>$${formatMoney(total)} • ${dayEntries.length} chores</small>`;
+
+  historyList.appendChild(heading);
+
+  lastDay = entry.day;
+}
 
     let item = document.createElement("div");
     item.innerHTML = `✓ ${entry.chore} — $${formatMoney(entry.amount)}`;
