@@ -228,7 +228,7 @@
     <div class="top-row">
       <h2>Balance: $<span id="balance">0.00</span></h2>
     </div>
-    <button id="dayButton" class="reset-btn" onclick="pressAndRun(this, resetDay)">End Day</button>
+    <button id="dayButton" class="reset-btn" onclick="pressAndRun(this, handleDayButton)">End Day</button>
   </div>
 </div>
 
@@ -560,6 +560,14 @@ function deleteChore(i) {
 
   saveData();
   updateUI();
+}
+
+  function handleDayButton() {
+  if (dayEnded) {
+    continueDay();
+  } else {
+    resetDay();
+  }
 }
 
 function resetDay() {
