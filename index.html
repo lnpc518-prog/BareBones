@@ -432,7 +432,10 @@ function toggleHistory() {
   collapsedHistory[day] = !collapsedHistory[day];
   updateUI();
 }
-  
+
+  function openHistoryDay(day) {
+  alert("Editing " + day + " is coming soon!");
+}
   
 function updateUI() {
   document.getElementById("balance").innerText = formatMoney(balance);
@@ -503,7 +506,7 @@ activity
   heading.style.cursor = "pointer";
 
   heading.onclick = function () {
-  alert("Editing history is coming soon!");
+  openHistoryDay(entry.day);
 };
       
   historyList.appendChild(heading);
