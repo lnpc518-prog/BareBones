@@ -569,7 +569,7 @@ function deleteChore(i) {
   if (dayEnded) {
     continueDay();
   } else {
-    resetDay();
+    endDay();
   }
 }
 
@@ -606,7 +606,7 @@ function deleteChore(i) {
   updateUI();
 }
 
-function resetDay() {
+function endDay() {
   let confirmed = confirm(
   "End today?\n\nToday's activity will be moved to History.\nToday's chore counts will reset to 0.\n\nYou'll be able to edit today's archived activity later from History."
 );
