@@ -262,7 +262,8 @@ let chores = [];
 let activity = [];
 let dayEnded = false;
 let collapsedHistory = {};
-
+let activeDay = new Date().toDateString();
+  
 function press(btn) {
   btn.classList.add("pressed");
   setTimeout(() => {
@@ -280,11 +281,13 @@ function loadData() {
   const savedChores = localStorage.getItem("chores");
   const savedActivity = localStorage.getItem("activity");
   const savedDayEnded = localStorage.getItem("dayEnded");
+  const savedActiveDay = localStorage.getItem("activeDay");
   
   balance = savedBalance !== null ? parseFloat(savedBalance) : 0;
   chores = savedChores !== null ? JSON.parse(savedChores) : [];
   activity = savedActivity !== null ? JSON.parse(savedActivity) : [];
   dayEnded = savedDayEnded === "true";
+  activeDay = savedActiveDay || new Date().toDateString();
 }
 
 function saveData() {
@@ -292,6 +295,7 @@ function saveData() {
   localStorage.setItem("chores", JSON.stringify(chores));
   localStorage.setItem("activity", JSON.stringify(activity));
   localStorage.setItem("dayEnded", dayEnded);
+  localStorage.setItem("activeDay", activeDay);
 }
 function formatMoney(n) {
   return Number(n).toFixed(2);
