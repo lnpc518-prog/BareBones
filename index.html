@@ -434,7 +434,42 @@ function toggleHistory() {
 }
 
   function openHistoryDay(day) {
-  alert("Editing " + day + " is coming soon!");
+  closeHistoryDay();
+
+  let dayEntries = activity.filter(entry =>
+    entry.archived && entry.day === day
+  );
+
+  let total = dayEntries.reduce((sum, entry) => sum + entry.amount, 0);
+
+  let backdrop = document.createElement("div");
+  backdrop.className = "menu-backdrop";
+  backdrop.id = "historyDayView";
+
+  let entriesHTML = dayEntries.map(entry => {
+    return `<div>✓ ${entry.chore} — $${formatMoney(entry.amount)}</div>`;
+  }).join("");
+
+  backdrop.innerHTML = `
+    <div class="menu">
+      <div class="menu-grabber"></div>
+      <h3>${formatHistoryDay(day)}</h3>
+      <p>$${formatMoney(total)} • ${dayEntries.length} chores</p>
+      ${entriesHTML}
+      <button class="cancel-btn" onclick="closeHistoryDay()">Close</button>
+    </div>
+  `;
+
+  backdrop.addEventListener("click", function(e) {
+    if (e.target === backdrop) closeHistoryDay();
+  });
+
+  document.body.appendChild(backdrop);
+}
+
+function closeHistoryDay() {
+  let view = document.getElementById("historyDayView");
+  if (view) view.remove();
 }
   
 function updateUI() {
