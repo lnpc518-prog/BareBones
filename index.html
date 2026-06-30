@@ -573,6 +573,31 @@ function deleteChore(i) {
   }
 }
 
+  function continueDay() {
+  activity.forEach(entry => {
+    if (entry.archived && entry.day === new Date().toDateString()) {
+      entry.archived = false;
+    }
+  });
+
+  balance = activity
+    .filter(entry => !entry.archived && entry.day === new Date().toDateString())
+    .reduce((sum, entry) => sum + entry.amount, 0);
+
+  chores.forEach(c => {
+    c.count = activity.filter(entry =>
+      !entry.archived &&
+      entry.day === new Date().toDateString() &&
+      entry.chore === c.name
+    ).length;
+  });
+
+  dayEnded = false;
+
+  saveData();
+  updateUI();
+}
+
 function resetDay() {
   let confirmed = confirm(
   "End today?\n\nToday's activity will be moved to History.\nToday's chore counts will reset to 0.\n\nYou'll be able to edit today's archived activity later from History."
