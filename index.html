@@ -468,7 +468,7 @@ function updateUI() {
   let activityList = document.getElementById("activityList");
   activityList.innerHTML = "";
 
-    const today = new Date().toDateString();
+    const today = activeDay;
 
   activity
     .filter(entry => entry.day === today && !entry.archived)
@@ -549,7 +549,7 @@ function logChore(i) {
   activity.push({
   chore: chores[i].name,
   amount: chores[i].amount,
-  day: new Date().toDateString(),
+  day: activeDay,
   archived: false
 });
 
@@ -561,7 +561,7 @@ function undoChore(i) {
     chores[i].count -= 1;
     balance -= chores[i].amount;
 
-    const today = new Date().toDateString();
+    const today = activeDay;
 
 for (let j = activity.length - 1; j >= 0; j--) {
   if (activity[j].chore === chores[i].name && activity[j].day === today) {
@@ -603,7 +603,8 @@ function deleteChore(i) {
   }
 
   let dayToContinue = archivedEntries[archivedEntries.length - 1].day;
-
+  activeDay = dayToContinue;
+    
   activity.forEach(entry => {
     if (entry.archived && entry.day === dayToContinue) {
       entry.archived = false;
