@@ -592,8 +592,8 @@ function deleteChore(i) {
 
   function continueDay() {
   let archivedToday = activity.filter(entry =>
-    entry.archived && entry.day === new Date().toDateString()
-  );
+  entry.archived
+);
 
   if (archivedToday.length === 0) return;
 
