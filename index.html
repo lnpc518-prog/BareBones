@@ -261,7 +261,7 @@ let balance = 0;
 let chores = [];
 let activity = [];
 let dayEnded = false;
-
+let collapsedHistory = {};
 
 function press(btn) {
   btn.classList.add("pressed");
@@ -423,6 +423,12 @@ function toggleHistory() {
   function formatHistoryDay(day) {
   return day;
 }
+
+  function toggleHistoryDay(day) {
+  collapsedHistory[day] = !collapsedHistory[day];
+  updateUI();
+}
+  
   
 function updateUI() {
   document.getElementById("balance").innerText = formatMoney(balance);
@@ -490,6 +496,12 @@ activity
   heading.innerHTML =
     `${formatHistoryDay(entry.day)}<br><small>$${formatMoney(total)} • ${dayEntries.length} chores</small>`;
 
+  heading.style.cursor = "pointer";
+
+  heading.onclick = function () {
+  alert("Editing history is coming soon!");
+};
+      
   historyList.appendChild(heading);
 
   lastDay = entry.day;
