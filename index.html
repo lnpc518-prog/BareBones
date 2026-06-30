@@ -446,9 +446,14 @@ function toggleHistory() {
   backdrop.className = "menu-backdrop";
   backdrop.id = "historyDayView";
 
-  let entriesHTML = dayEntries.map(entry => {
-    return `<div>✓ ${entry.chore} — $${formatMoney(entry.amount)}</div>`;
-  }).join("");
+  let entriesHTML = dayEntries.map((entry, index) => {
+  return `
+    <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; padding:6px 0;">
+      <span>✓ ${entry.chore} — $${formatMoney(entry.amount)}</span>
+      <button style="font-size:14px; padding:6px 8px;" onclick="deleteHistoryEntry('${entry.day}', ${index})">Delete</button>
+    </div>
+  `;
+}).join("");
 
   backdrop.innerHTML = `
     <div class="menu">
