@@ -511,6 +511,22 @@ function closeHistoryDay() {
 }
 
   function addMissedChore(day, index) {
+  let chore = chores[index];
+  if (!chore) return;
+
+  activity.push({
+    chore: chore.name,
+    amount: chore.amount,
+    day: day,
+    archived: true
+  });
+
+  saveData();
+  closeMissedChoreMenu();
+  closeHistoryDay();
+  updateUI();
+  openHistoryDay(day);
+}
     
 function closeMissedChoreMenu() {
   let menu = document.getElementById("missedChoreMenu");
