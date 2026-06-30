@@ -574,20 +574,28 @@ function deleteChore(i) {
 }
 
   function continueDay() {
+  let archivedToday = activity.filter(entry =>
+    entry.archived && entry.day === new Date().toDateString()
+  );
+
+  if (archivedToday.length === 0) return;
+
+  let dayToContinue = archivedToday[archivedToday.length - 1].day;
+
   activity.forEach(entry => {
-    if (entry.archived && entry.day === new Date().toDateString()) {
+    if (entry.archived && entry.day === dayToContinue) {
       entry.archived = false;
     }
   });
 
   balance = activity
-    .filter(entry => !entry.archived && entry.day === new Date().toDateString())
+    .filter(entry => !entry.archived && entry.day === dayToContinue)
     .reduce((sum, entry) => sum + entry.amount, 0);
 
   chores.forEach(c => {
     c.count = activity.filter(entry =>
       !entry.archived &&
-      entry.day === new Date().toDateString() &&
+      entry.day === dayToContinue &&
       entry.chore === c.name
     ).length;
   });
