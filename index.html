@@ -453,7 +453,6 @@ function updateUI() {
   activity
     .filter(entry => entry.day === today && !entry.archived)
     .slice()
-    .reverse()
     .forEach(entry => {
       let item = document.createElement("div");
       item.innerHTML = `✓ ${entry.chore} — $${formatMoney(entry.amount)}`;
@@ -465,7 +464,6 @@ function updateUI() {
   activity
     .filter(entry => entry.archived)
     .slice()
-    .reverse()
     .forEach(entry => {
       let item = document.createElement("div");
       item.innerHTML = `${entry.day}: ✓ ${entry.chore} — $${formatMoney(entry.amount)}`;
