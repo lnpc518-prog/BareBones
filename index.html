@@ -289,8 +289,9 @@ function loadData() {
   dayEnded = savedDayEnded === "true";
   activeDay = savedActiveDay || new Date().toDateString();
 
-if (!dayEnded && activeDay !== new Date().toDateString()) {
-  activeDay = new Date().toDateString();
+  if (!dayEnded && activeDay !== new Date().toDateString()) {
+    activeDay = new Date().toDateString();
+  }
 }
 
 function saveData() {
