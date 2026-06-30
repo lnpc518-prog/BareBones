@@ -450,7 +450,7 @@ function toggleHistory() {
   return `
     <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; padding:6px 0;">
       <span>✓ ${entry.chore} — $${formatMoney(entry.amount)}</span>
-      <button style="font-size:14px; padding:6px 8px;" onclick="deleteHistoryEntry('${entry.day}', ${index})">Delete</button>
+      <button style="width:28px; height:28px; padding:0; font-size:18px;" onclick="deleteHistoryEntry('${entry.day}', ${index})">×</button>
     </div>
   `;
 }).join("");
