@@ -720,14 +720,16 @@ function deleteChore(i) {
 }
 
   function continueDay() {
-  let archivedEntries = activity.filter(entry => entry.archived);
+  let dayToContinue = activeDay;
 
-  if (archivedEntries.length === 0) {
-    alert("No ended day found to continue.");
-    return;
-  }
+let archivedEntries = activity.filter(entry =>
+  entry.archived && entry.day === dayToContinue
+);
 
-  let dayToContinue = archivedEntries[archivedEntries.length - 1].day;
+if (archivedEntries.length === 0) {
+  alert("No ended day found to continue.");
+  return;
+}
   activeDay = dayToContinue;
     
   activity.forEach(entry => {
