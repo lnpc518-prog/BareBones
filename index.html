@@ -645,7 +645,14 @@ activity
 }
 
 function focusAdd() {
-  document.getElementById("name").focus();
+  document.getElementById("name").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+
+  setTimeout(() => {
+    document.getElementById("name").focus();
+  }, 300);
 }
 
 function addChore() {
