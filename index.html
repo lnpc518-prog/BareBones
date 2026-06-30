@@ -759,7 +759,7 @@ function endDay() {
   balance = 0;
   chores.forEach(c => c.count = 0);
   activity.forEach(entry => {
-  if (!entry.archived) {
+  if (!entry.archived && entry.day === activeDay) {
     entry.archived = true;
   }
 });
