@@ -591,13 +591,14 @@ function deleteChore(i) {
 }
 
   function continueDay() {
-  let archivedToday = activity.filter(entry =>
-  entry.archived
-);
+  let archivedEntries = activity.filter(entry => entry.archived);
 
-  if (archivedToday.length === 0) return;
+  if (archivedEntries.length === 0) {
+    alert("No ended day found to continue.");
+    return;
+  }
 
-  let dayToContinue = archivedToday[archivedToday.length - 1].day;
+  let dayToContinue = archivedEntries[archivedEntries.length - 1].day;
 
   activity.forEach(entry => {
     if (entry.archived && entry.day === dayToContinue) {
@@ -622,7 +623,6 @@ function deleteChore(i) {
   saveData();
   updateUI();
 }
-
 function endDay() {
   let confirmed = confirm(
   "End today?\n\nToday's activity will be moved to History.\nToday's chore counts will reset to 0.\n\nYou'll be able to edit today's archived activity later from History."
