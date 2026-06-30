@@ -478,6 +478,36 @@ function closeHistoryDay() {
   if (view) view.remove();
 }
 
+  function openMissedChoreMenu(day) {
+  let optionsHTML = chores.map((chore, index) => {
+    return `<button onclick="addMissedChore('${day}', ${index})">${chore.name}</button>`;
+  }).join("");
+
+  let backdrop = document.createElement("div");
+  backdrop.className = "menu-backdrop";
+  backdrop.id = "missedChoreMenu";
+
+  backdrop.innerHTML = `
+    <div class="menu">
+      <div class="menu-grabber"></div>
+      <h3>Add missed chore</h3>
+      ${optionsHTML}
+      <button class="cancel-btn" onclick="closeMissedChoreMenu()">Cancel</button>
+    </div>
+  `;
+
+  backdrop.addEventListener("click", function(e) {
+    if (e.target === backdrop) closeMissedChoreMenu();
+  });
+
+  document.body.appendChild(backdrop);
+}
+
+function closeMissedChoreMenu() {
+  let menu = document.getElementById("missedChoreMenu");
+  if (menu) menu.remove();
+}
+
 function deleteHistoryEntry(day, index) {
   let dayEntries = activity.filter(entry =>
     entry.archived && entry.day === day
