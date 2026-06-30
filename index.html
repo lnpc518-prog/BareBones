@@ -461,7 +461,8 @@ function toggleHistory() {
       <h3>${formatHistoryDay(day)}</h3>
       <p>$${formatMoney(total)} • ${dayEntries.length} chores</p>
       ${entriesHTML}
-      <button class="cancel-btn" onclick="closeHistoryDay()">Close</button>
+<button class="cancel-btn" onclick="openMissedChoreMenu('${day}')">+ Add missed chore</button>
+<button class="cancel-btn" onclick="closeHistoryDay()">Close</button>
     </div>
   `;
 
