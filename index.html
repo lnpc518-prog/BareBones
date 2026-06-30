@@ -279,16 +279,19 @@ function loadData() {
   const savedBalance = localStorage.getItem("balance");
   const savedChores = localStorage.getItem("chores");
   const savedActivity = localStorage.getItem("activity");
-
+  const savedDayEnded = localStorage.getItem("dayEnded");
+  
   balance = savedBalance !== null ? parseFloat(savedBalance) : 0;
   chores = savedChores !== null ? JSON.parse(savedChores) : [];
   activity = savedActivity !== null ? JSON.parse(savedActivity) : [];
+  dayEnded = savedDayEnded === "true";
 }
 
 function saveData() {
   localStorage.setItem("balance", balance);
   localStorage.setItem("chores", JSON.stringify(chores));
   localStorage.setItem("activity", JSON.stringify(activity));
+  localStorage.setItem("dayEnded", dayEnded);
 }
 function formatMoney(n) {
   return Number(n).toFixed(2);
