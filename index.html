@@ -239,7 +239,7 @@
   
 <div class="box">
   <h3>Activity</h3>
-  <div id="activityList"></div>
+<div id="activityDate" style="color:#666; font-size:14px; margin-bottom:8px;"></div>
 </div>
   
 <div class="box">
@@ -575,6 +575,7 @@ function deleteHistoryEntry(day, index) {
 function updateUI() {
   document.getElementById("balance").innerText = formatMoney(balance);
   document.getElementById("dayButton").innerText = dayEnded ? "Continue Day" : "End Day";
+  document.getElementById("activityDate").innerText = activeDay;
   
   let list = document.getElementById("choreList");
   list.innerHTML = "";
