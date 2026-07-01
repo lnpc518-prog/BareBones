@@ -289,10 +289,23 @@ function loadData() {
   dayEnded = savedDayEnded === "true";
   activeDay = savedActiveDay || new Date().toDateString();
 
-  if (!dayEnded && activeDay !== new Date().toDateString()) {
-    activeDay = new Date().toDateString();
-  }
+  const realToday = new Date().toDateString();
+
+if (activeDay !== realToday) {
+  activity.forEach(entry => {
+    if (!entry.archived && entry.day === activeDay) {
+      entry.archived = true;
+    }
+  });
+
+  dayEnded = false;
+  activeDay = realToday;
+  balance = 0;
+  chores.forEach(c => c.count = 0);
+
+  saveData();
 }
+
 
 function saveData() {
   localStorage.setItem("balance", balance);
