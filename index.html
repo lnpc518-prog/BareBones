@@ -735,7 +735,10 @@ let archivedEntries = activity.filter(entry =>
 );
 
 if (archivedEntries.length === 0) {
-  alert("No ended day found to continue.");
+  dayEnded = false;
+  activeDay = new Date().toDateString();
+  saveData();
+  updateUI();
   return;
 }
  
