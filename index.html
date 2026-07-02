@@ -444,6 +444,19 @@ function toggleHistory() {
     historyHeader.innerText = "› History";
   }
 }
+  
+  function toggleChores() {
+  let choreList = document.getElementById("choreList");
+  let choreHeader = choreList.previousElementSibling;
+
+  if (choreList.style.display === "none") {
+    choreList.style.display = "block";
+    choreHeader.innerText = "⌄ Chores";
+  } else {
+    choreList.style.display = "none";
+    choreHeader.innerText = "› Chores";
+  }
+}
 
   function formatHistoryDay(day) {
   return day;
