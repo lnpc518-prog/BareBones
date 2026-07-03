@@ -240,9 +240,13 @@
 </div>
   
 <div class="box">
-  <h3>Activity</h3>
-  <div id="activityDate" style="color:#666; font-size:14px; margin-bottom:8px;"></div>
-  <div id="activityList"></div>
+  <h3 onclick="toggleActivity()" style="cursor: pointer;">
+    ⌄ Activity
+  </h3>
+  <div id="activitySection">
+    <div id="activityDate" style="color:#666; font-size:14px; margin-bottom:8px;"></div>
+    <div id="activityList"></div>
+  </div>
 </div>
   
 <div class="box">
@@ -457,6 +461,20 @@ function toggleHistory() {
     choreHeader.innerText = "› Chores";
   }
 }
+
+  function toggleActivity() {
+  let activitySection = document.getElementById("activitySection");
+  let activityHeader = activitySection.previousElementSibling;
+
+  if (activitySection.style.display === "none") {
+    activitySection.style.display = "block";
+    activityHeader.innerText = "⌄ Activity";
+  } else {
+    activitySection.style.display = "none";
+    activityHeader.innerText = "› Activity";
+  }
+}
+  
 
   function formatHistoryDay(day) {
   return day;
