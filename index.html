@@ -256,11 +256,15 @@
   <div id="historyList" style="display: none;"></div>
 </div>
 
-  <div class="box">
-  <h3>Add Chore</h3>
-  <input id="name" placeholder="Chore name">
-  <input id="amount" placeholder="Amount ($)">
-  <button onclick="pressAndRun(this, addChore)">Add</button>
+ <div class="box">
+  <h3 onclick="toggleAddChore()" style="cursor: pointer;">
+    ⌄ Add Chore
+  </h3>
+  <div id="addChoreSection">
+    <input id="name" placeholder="Chore name">
+    <input id="amount" placeholder="Amount ($)">
+    <button onclick="pressAndRun(this, addChore)">Add</button>
+  </div>
 </div>
   
 <script>
@@ -474,7 +478,19 @@ function toggleHistory() {
     activityHeader.innerText = "› Activity";
   }
 }
-  
+
+  function toggleAddChore() {
+  let addChoreSection = document.getElementById("addChoreSection");
+  let addChoreHeader = addChoreSection.previousElementSibling;
+
+  if (addChoreSection.style.display === "none") {
+    addChoreSection.style.display = "block";
+    addChoreHeader.innerText = "⌄ Add Chore";
+  } else {
+    addChoreSection.style.display = "none";
+    addChoreHeader.innerText = "› Add Chore";
+  }
+}
 
   function formatHistoryDay(day) {
   return day;
