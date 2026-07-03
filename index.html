@@ -643,6 +643,16 @@ function updateUI() {
     let div = document.createElement("div");
     div.className = "chore";
 
+    let choreHeader = document.getElementById("choreList").previousElementSibling;
+
+    if (choresCollapsed) {
+    document.getElementById("choreList").style.display = "none";
+    choreHeader.innerText = "› Chores";
+  } else {
+  document.getElementById("choreList").style.display = "block";
+  choreHeader.innerText = "⌄ Chores";
+  }
+
     div.innerHTML = `
       <button class="handle" onclick="press(this); openMoveMenu(${i})">☰</button>
 
