@@ -461,13 +461,17 @@ function toggleHistory() {
   let choreList = document.getElementById("choreList");
   let choreHeader = choreList.previousElementSibling;
 
-  if (choreList.style.display === "none") {
-    choreList.style.display = "block";
-    choreHeader.innerText = "⌄ Chores";
-  } else {
+  choresCollapsed = !choresCollapsed;
+
+  if (choresCollapsed) {
     choreList.style.display = "none";
     choreHeader.innerText = "› Chores";
+  } else {
+    choreList.style.display = "block";
+    choreHeader.innerText = "⌄ Chores";
   }
+
+  saveData();
 }
 
   function toggleActivity() {
