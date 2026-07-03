@@ -642,7 +642,7 @@ function updateUI() {
 activity
   .filter(entry => entry.archived)
   .slice()
-  .sort((a, b) => new Date(a.day) - new Date(b.day))
+ .sort((a, b) => new Date(b.day) - new Date(a.day))
   .forEach(entry => {
 
     if (entry.day !== lastDay) {
