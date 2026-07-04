@@ -283,7 +283,7 @@ function press(btn) {
   }, 120);
 }
 
-hfunction pressAndRun(btn, action) {
+function pressAndRun(btn, action) {
   press(btn);
   setTimeout(action, 90);
 }
@@ -643,16 +643,7 @@ function updateUI() {
     let div = document.createElement("div");
     div.className = "chore";
 
-    let choreHeader = document.getElementById("choreList").previousElementSibling;
-
-    if (choresCollapsed) {
-    document.getElementById("choreList").style.display = "none";
-    choreHeader.innerText = "› Chores";
-  } else {
-  document.getElementById("choreList").style.display = "block";
-  choreHeader.innerText = "⌄ Chores";
-  }
-
+    
     div.innerHTML = `
       <button class="handle" onclick="press(this); openMoveMenu(${i})">☰</button>
 
@@ -672,6 +663,16 @@ function updateUI() {
     shrinkName(div.querySelector(".name"));
     addSwipeDelete(div, i);
   });   
+
+    let choreHeader = document.getElementById("choreList").previousElementSibling;
+
+    if (choresCollapsed) {
+    document.getElementById("choreList").style.display = "none";
+    choreHeader.innerText = "› Chores";
+  } else {
+  document.getElementById("choreList").style.display = "block";
+  choreHeader.innerText = "⌄ Chores";
+  }
   
   let activityList = document.getElementById("activityList");
   activityList.innerHTML = "";
