@@ -277,6 +277,7 @@ let activeDay = new Date().toDateString();
 let choresCollapsed = false;
 let activityCollapsed = false; 
 let historyCollapsed = true;
+let addChoreCollapsed = false;  
   
 function press(btn) {
   btn.classList.add("pressed");
@@ -299,6 +300,7 @@ function loadData() {
   const savedChoresCollapsed = localStorage.getItem("choresCollapsed");
   const savedActivityCollapsed = localStorage.getItem("activityCollapsed");
   const savedHistoryCollapsed = localStorage.getItem("historyCollapsed");
+  const savedAddChoreCollapsed = localStorage.getItem("addChoreCollapsed");
   
   balance = savedBalance !== null ? parseFloat(savedBalance) : 0;
   chores = savedChores !== null ? JSON.parse(savedChores) : [];
@@ -310,6 +312,7 @@ function loadData() {
   historyCollapsed = savedHistoryCollapsed === null
   ? true
   : savedHistoryCollapsed === "true";
+  addChoreCollapsed = savedAddChoreCollapsed === "true";
   
   const realToday = new Date().toDateString();
 
@@ -340,6 +343,7 @@ function saveData() {
   localStorage.setItem("choresCollapsed", choresCollapsed);
   localStorage.setItem("activityCollapsed", activityCollapsed);
   localStorage.setItem("historyCollapsed", historyCollapsed);
+  localStorage.setItem("addChoreCollapsed", addChoreCollapsed);
 }
   
 function formatMoney(n) {
@@ -511,13 +515,17 @@ function toggleHistory() {
   let addChoreSection = document.getElementById("addChoreSection");
   let addChoreHeader = addChoreSection.previousElementSibling;
 
-  if (addChoreSection.style.display === "none") {
-    addChoreSection.style.display = "block";
-    addChoreHeader.innerText = "⌄ Add Chore";
-  } else {
+  addChoreCollapsed = !addChoreCollapsed;
+
+  if (addChoreCollapsed) {
     addChoreSection.style.display = "none";
     addChoreHeader.innerText = "› Add Chore";
+  } else {
+    addChoreSection.style.display = "block";
+    addChoreHeader.innerText = "⌄ Add Chore";
   }
+
+  saveData();
 }
 
   function formatHistoryDay(day) {
@@ -766,6 +774,16 @@ activity
     historyList.appendChild(item);
 
   });
+  let addChoreSection = document.getElementById("addChoreSection");
+let addChoreHeader = addChoreSection.previousElementSibling;
+
+if (addChoreCollapsed) {
+  addChoreSection.style.display = "none";
+  addChoreHeader.innerText = "› Add Chore";
+} else {
+  addChoreSection.style.display = "block";
+  addChoreHeader.innerText = "⌄ Add Chore";
+}
 }
 
 function focusAdd() {
