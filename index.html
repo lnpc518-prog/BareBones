@@ -275,6 +275,7 @@ let dayEnded = false;
 let collapsedHistory = {};
 let activeDay = new Date().toDateString();
 let choresCollapsed = false;
+let activityCollapsed = false; 
   
 function press(btn) {
   btn.classList.add("pressed");
@@ -295,6 +296,7 @@ function loadData() {
   const savedDayEnded = localStorage.getItem("dayEnded");
   const savedActiveDay = localStorage.getItem("activeDay");
   const savedChoresCollapsed = localStorage.getItem("choresCollapsed");
+  const savedActivityCollapsed = localStorage.getItem("activityCollapsed");
   
   balance = savedBalance !== null ? parseFloat(savedBalance) : 0;
   chores = savedChores !== null ? JSON.parse(savedChores) : [];
@@ -302,6 +304,7 @@ function loadData() {
   dayEnded = savedDayEnded === "true";
   activeDay = savedActiveDay || new Date().toDateString();
   choresCollapsed = savedChoresCollapsed === "true";
+  activityCollapsed = savedActivityCollapsed === "true";
   
   const realToday = new Date().toDateString();
 
@@ -330,6 +333,7 @@ function saveData() {
   localStorage.setItem("dayEnded", dayEnded);
   localStorage.setItem("activeDay", activeDay);
   localStorage.setItem("choresCollapsed", choresCollapsed);
+  localStorage.setItem("activityCollapsed", activityCollapsed);
 }
 function formatMoney(n) {
   return Number(n).toFixed(2);
@@ -479,13 +483,17 @@ function toggleHistory() {
   let activitySection = document.getElementById("activitySection");
   let activityHeader = activitySection.previousElementSibling;
 
-  if (activitySection.style.display === "none") {
-    activitySection.style.display = "block";
-    activityHeader.innerText = "⌄ Activity";
-  } else {
+  activityCollapsed = !activityCollapsed;
+
+  if (activityCollapsed) {
     activitySection.style.display = "none";
     activityHeader.innerText = "› Activity";
+  } else {
+    activitySection.style.display = "block";
+    activityHeader.innerText = "⌄ Activity";
   }
+
+  saveData();
 }
 
   function toggleAddChore() {
@@ -674,6 +682,16 @@ function updateUI() {
   document.getElementById("choreList").style.display = "block";
   choreHeader.innerText = "⌄ Chores";
   }
+
+  let activityHeader = document.getElementById("activitySection").previousElementSibling;
+
+if (activityCollapsed) {
+  document.getElementById("activitySection").style.display = "none";
+  activityHeader.innerText = "› Activity";
+} else {
+  document.getElementById("activitySection").style.display = "block";
+  activityHeader.innerText = "⌄ Activity";
+}
   
   let activityList = document.getElementById("activityList");
   activityList.innerHTML = "";
