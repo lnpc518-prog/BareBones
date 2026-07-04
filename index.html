@@ -276,6 +276,7 @@ let collapsedHistory = {};
 let activeDay = new Date().toDateString();
 let choresCollapsed = false;
 let activityCollapsed = false; 
+let historyCollapsed = true;
   
 function press(btn) {
   btn.classList.add("pressed");
@@ -297,6 +298,7 @@ function loadData() {
   const savedActiveDay = localStorage.getItem("activeDay");
   const savedChoresCollapsed = localStorage.getItem("choresCollapsed");
   const savedActivityCollapsed = localStorage.getItem("activityCollapsed");
+  const savedHistoryCollapsed = localStorage.getItem("historyCollapsed");
   
   balance = savedBalance !== null ? parseFloat(savedBalance) : 0;
   chores = savedChores !== null ? JSON.parse(savedChores) : [];
@@ -305,6 +307,9 @@ function loadData() {
   activeDay = savedActiveDay || new Date().toDateString();
   choresCollapsed = savedChoresCollapsed === "true";
   activityCollapsed = savedActivityCollapsed === "true";
+  historyCollapsed = savedHistoryCollapsed === null
+  ? true
+  : savedHistoryCollapsed === "true";
   
   const realToday = new Date().toDateString();
 
@@ -334,7 +339,9 @@ function saveData() {
   localStorage.setItem("activeDay", activeDay);
   localStorage.setItem("choresCollapsed", choresCollapsed);
   localStorage.setItem("activityCollapsed", activityCollapsed);
+  localStorage.setItem("historyCollapsed", historyCollapsed);
 }
+  
 function formatMoney(n) {
   return Number(n).toFixed(2);
 }
@@ -453,13 +460,17 @@ function toggleHistory() {
   let historyList = document.getElementById("historyList");
   let historyHeader = historyList.previousElementSibling;
 
-  if (historyList.style.display === "none") {
-    historyList.style.display = "block";
-    historyHeader.innerText = "⌄ History";
-  } else {
+  historyCollapsed = !historyCollapsed;
+
+  if (historyCollapsed) {
     historyList.style.display = "none";
     historyHeader.innerText = "› History";
+  } else {
+    historyList.style.display = "block";
+    historyHeader.innerText = "⌄ History";
   }
+
+  saveData();
 }
   
   function toggleChores() {
@@ -708,6 +719,16 @@ if (activityCollapsed) {
     });
     let historyList = document.getElementById("historyList");
   historyList.innerHTML = "";
+
+  let historyHeader = historyList.previousElementSibling;
+
+if (historyCollapsed) {
+  historyList.style.display = "none";
+  historyHeader.innerText = "› History";
+} else {
+  historyList.style.display = "block";
+  historyHeader.innerText = "⌄ History";
+}
 
   let lastDay = "";
 
