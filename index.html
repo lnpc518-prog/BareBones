@@ -161,6 +161,18 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
+    .collapsible-section {
+  overflow: hidden;
+  transition: max-height 0.25s ease, opacity 0.25s ease;
+  max-height: 1000px;
+  opacity: 1;
+}
+
+.collapsible-section.collapsed {
+  max-height: 0;
+  opacity: 0;
+}
+
    .menu-backdrop {
   position: fixed;
   inset: 0;
