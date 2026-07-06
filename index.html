@@ -248,14 +248,14 @@
   <h3 onclick="toggleChores()" style="cursor: pointer;">
     ⌄ Chores
   </h3>
-  <div id="choreList"></div>
+  <div id="choreList" class="collapsible-section">
 </div>
   
 <div class="box">
   <h3 onclick="toggleActivity()" style="cursor: pointer;">
     ⌄ Activity
   </h3>
-  <div id="activitySection">
+  <div id="activitySection" class="collapsible-section">
     <div id="activityDate" style="color:#666; font-size:14px; margin-bottom:8px;"></div>
     <div id="activityList"></div>
   </div>
@@ -265,14 +265,14 @@
   <h3 onclick="toggleHistory()" style="cursor: pointer;">
   › History
 </h3>
-  <div id="historyList" style="display: none;"></div>
+  <div id="historyList" class="collapsible-section" style="display: none;">
 </div>
 
  <div class="box">
   <h3 onclick="toggleAddChore()" style="cursor: pointer;">
     ⌄ Add Chore
   </h3>
-  <div id="addChoreSection">
+  <div id="addChoreSection" class="collapsible-section">
     <input id="name" placeholder="Chore name">
     <input id="amount" placeholder="Amount ($)">
     <button onclick="pressAndRun(this, addChore)">Add</button>
@@ -496,10 +496,10 @@ function toggleHistory() {
   choresCollapsed = !choresCollapsed;
 
   if (choresCollapsed) {
-    choreList.style.display = "none";
+    choreList.classList.add("collapsed");
     choreHeader.innerText = "› Chores";
   } else {
-    choreList.style.display = "block";
+    choreList.classList.remove("collapsed");
     choreHeader.innerText = "⌄ Chores";
   }
 
@@ -707,12 +707,12 @@ function updateUI() {
     let choreHeader = document.getElementById("choreList").previousElementSibling;
 
     if (choresCollapsed) {
-    document.getElementById("choreList").style.display = "none";
-    choreHeader.innerText = "› Chores";
-  } else {
-  document.getElementById("choreList").style.display = "block";
+  document.getElementById("choreList").classList.add("collapsed");
+  choreHeader.innerText = "› Chores";
+} else {
+  document.getElementById("choreList").classList.remove("collapsed");
   choreHeader.innerText = "⌄ Chores";
-  }
+}
 
   let activityHeader = document.getElementById("activitySection").previousElementSibling;
 
