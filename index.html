@@ -425,11 +425,20 @@ function addSwipeDelete(row, i) {
   let swiping = false;
 
   row.addEventListener("touchstart", function(e) {
-    if (e.target.closest("button")) return;
-    startX = e.touches[0].clientX;
-    currentX = startX;
-    swiping = true;
-  }, { passive: true });
+  if (e.target.closest("button")) return;
+
+  let rowRightEdge = row.getBoundingClientRect().right;
+  let touchX = e.touches[0].clientX;
+
+  if (rowRightEdge - touchX > 55) {
+    swiping = false;
+    return;
+  }
+
+  startX = touchX;
+  currentX = startX;
+  swiping = true;
+}, { passive: true });
 
   row.addEventListener("touchmove", function(e) {
     if (!swiping) return;
