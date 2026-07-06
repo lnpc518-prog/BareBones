@@ -161,18 +161,6 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
-    .collapsible-section {
-  overflow: hidden;
-  transition: max-height 0.25s ease, opacity 0.25s ease;
-  max-height: 1000px;
-  opacity: 1;
-}
-
-.collapsible-section.collapsed {
-  max-height: 0;
-  opacity: 0;
-}
-
    .menu-backdrop {
   position: fixed;
   inset: 0;
@@ -248,14 +236,14 @@
   <h3 onclick="toggleChores()" style="cursor: pointer;">
     ⌄ Chores
   </h3>
-  <div id="choreList" class="collapsible-section">
+  <div id="choreList"></div>
 </div>
   
 <div class="box">
   <h3 onclick="toggleActivity()" style="cursor: pointer;">
     ⌄ Activity
   </h3>
-  <div id="activitySection" class="collapsible-section">
+  <div id="activitySection">
     <div id="activityDate" style="color:#666; font-size:14px; margin-bottom:8px;"></div>
     <div id="activityList"></div>
   </div>
@@ -265,14 +253,14 @@
   <h3 onclick="toggleHistory()" style="cursor: pointer;">
   › History
 </h3>
-  <div id="historyList" class="collapsible-section" style="display: none;">
+  <div id="historyList" style="display: none;"></div>
 </div>
 
  <div class="box">
   <h3 onclick="toggleAddChore()" style="cursor: pointer;">
     ⌄ Add Chore
   </h3>
-  <div id="addChoreSection" class="collapsible-section">
+  <div id="addChoreSection">
     <input id="name" placeholder="Chore name">
     <input id="amount" placeholder="Amount ($)">
     <button onclick="pressAndRun(this, addChore)">Add</button>
@@ -496,10 +484,10 @@ function toggleHistory() {
   choresCollapsed = !choresCollapsed;
 
   if (choresCollapsed) {
-    choreList.classList.add("collapsed");
+    choreList.style.display = "none";
     choreHeader.innerText = "› Chores";
   } else {
-    choreList.classList.remove("collapsed");
+    choreList.style.display = "block";
     choreHeader.innerText = "⌄ Chores";
   }
 
@@ -707,12 +695,12 @@ function updateUI() {
     let choreHeader = document.getElementById("choreList").previousElementSibling;
 
     if (choresCollapsed) {
-  document.getElementById("choreList").classList.add("collapsed");
-  choreHeader.innerText = "› Chores";
-} else {
-  document.getElementById("choreList").classList.remove("collapsed");
+    document.getElementById("choreList").style.display = "none";
+    choreHeader.innerText = "› Chores";
+  } else {
+  document.getElementById("choreList").style.display = "block";
   choreHeader.innerText = "⌄ Chores";
-}
+  }
 
   let activityHeader = document.getElementById("activitySection").previousElementSibling;
 
@@ -946,7 +934,6 @@ updateUI();
 
 </body>
 </html>
-
 
 
 
