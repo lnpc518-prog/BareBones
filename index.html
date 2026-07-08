@@ -837,16 +837,19 @@ function focusAdd() {
   }, 300);
 }
 
-function addChore() {
-  let name = document.getElementById("name").value;
-  let amount = parseFloat(document.getElementById("amount").value);
+function addChore(nameOverride, amountOverride) {
+  let name = nameOverride ?? document.getElementById("name").value;
+  let amount = amountOverride ?? parseFloat(document.getElementById("amount").value);
 
   if (!name || isNaN(amount)) return;
 
   chores.push({ name, amount, count: 0 });
 
-  document.getElementById("name").value = "";
-  document.getElementById("amount").value = "";
+  let nameInput = document.getElementById("name");
+  let amountInput = document.getElementById("amount");
+
+  if (nameInput) nameInput.value = "";
+  if (amountInput) amountInput.value = "";
 
   saveData();
   updateUI();
