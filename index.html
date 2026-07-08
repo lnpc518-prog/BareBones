@@ -389,6 +389,32 @@ function closeMoveMenu() {
   if (menu) menu.remove();
 }
 
+ function openAddChorePopup() {
+  let backdrop = document.createElement("div");
+  backdrop.className = "menu-backdrop";
+  backdrop.id = "addChorePopup";
+
+  backdrop.innerHTML = `
+    <div class="menu">
+      <div class="menu-grabber"></div>
+      <h3>Add Chore</h3>
+      <button class="cancel-btn" onclick="closeAddChorePopup()">Cancel</button>
+    </div>
+  `;
+
+  backdrop.addEventListener("click", function(e) {
+    if (e.target === backdrop) closeAddChorePopup();
+  });
+
+  document.body.appendChild(backdrop);
+}
+
+function closeAddChorePopup() {
+  let popup = document.getElementById("addChorePopup");
+  if (popup) popup.remove();
+} 
+  
+
 function moveChoreUp(i) {
   if (i <= 0) {
     closeMoveMenu();
