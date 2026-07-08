@@ -859,6 +859,8 @@ function addChore(nameOverride, amountOverride) {
   let name = document.getElementById("popupName").value;
   let amount = parseFloat(document.getElementById("popupAmount").value);
 
+  if (!name || isNaN(amount)) return;
+
   addChore(name, amount);
   closeAddChorePopup();
 }
