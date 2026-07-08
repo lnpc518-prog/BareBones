@@ -655,6 +655,12 @@ function closeHistoryDay() {
   document.body.appendChild(backdrop);
 }
 
+
+  function toggleShowAllHistory() {
+  showAllHistory = !showAllHistory;
+  updateUI();
+}
+
   function addMissedChore(day, index) {
   let chore = chores[index];
   if (!chore) return;
