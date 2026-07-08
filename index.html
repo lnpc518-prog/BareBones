@@ -855,6 +855,14 @@ function addChore(nameOverride, amountOverride) {
   updateUI();
 }
 
+  function addChoreFromPopup() {
+  let name = document.getElementById("popupName").value;
+  let amount = parseFloat(document.getElementById("popupAmount").value);
+
+  addChore(name, amount);
+  closeAddChorePopup();
+}
+
 function logChore(i) {
   if (dayEnded) {
   alert("Today has ended. Press Continue Day before adding more chores.");
