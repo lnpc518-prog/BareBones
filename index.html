@@ -389,7 +389,7 @@ function closeMoveMenu() {
   if (menu) menu.remove();
 }
 
- function openAddChorePopup() {
+function openAddChorePopup() {
   let backdrop = document.createElement("div");
   backdrop.className = "menu-backdrop";
   backdrop.id = "addChorePopup";
@@ -402,8 +402,8 @@ function closeMoveMenu() {
       <input id="popupName" placeholder="Chore name">
       <input id="popupAmount" placeholder="Amount ($)">
 
-      <button class="cancel-btn" onclick="addChoreFromPopup()">Add</button>
-      <button class="cancel-btn" onclick="closeAddChorePopup()">Cancel</button>
+      <button class="cancel-btn" onclick="pressAndRun(this, addChoreFromPopup)">Add</button>
+      <button class="cancel-btn" onclick="pressAndRun(this, closeAddChorePopup)">Cancel</button>
     </div>
   `;
 
