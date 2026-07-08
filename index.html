@@ -828,6 +828,20 @@ historyEntries
     historyList.appendChild(item);
 
   });
+
+  let historyDays = [...new Set(activity
+  .filter(entry => entry.archived)
+  .map(entry => entry.day)
+)];
+
+if (historyDays.length > 3) {
+  let showMoreButton = document.createElement("button");
+  showMoreButton.innerText = showAllHistory ? "Show Less" : "Show Older History";
+  showMoreButton.onclick = toggleShowAllHistory;
+  historyList.appendChild(showMoreButton);
+}
+
+  
   let addChoreSection = document.getElementById("addChoreSection");
 let addChoreHeader = addChoreSection.previousElementSibling;
 
