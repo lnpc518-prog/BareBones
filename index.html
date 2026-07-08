@@ -787,10 +787,17 @@ if (historyCollapsed) {
 
   let lastDay = "";
 
-activity
+let historyEntries = activity
   .filter(entry => entry.archived)
   .slice()
- .sort((a, b) => new Date(b.day) - new Date(a.day))
+  .sort((a, b) => new Date(b.day) - new Date(a.day));
+
+if (!showAllHistory) {
+  let recentDays = [...new Set(historyEntries.map(entry => entry.day))].slice(0, 3);
+  historyEntries = historyEntries.filter(entry => recentDays.includes(entry.day));
+}
+
+historyEntries
   .forEach(entry => {
 
     if (entry.day !== lastDay) {
