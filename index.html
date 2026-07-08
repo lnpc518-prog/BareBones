@@ -395,12 +395,17 @@ function closeMoveMenu() {
   backdrop.id = "addChorePopup";
 
   backdrop.innerHTML = `
-    <div class="menu">
-      <div class="menu-grabber"></div>
-      <h3>Add Chore</h3>
-      <button class="cancel-btn" onclick="closeAddChorePopup()">Cancel</button>
-    </div>
-  `;
+  <div class="menu">
+    <div class="menu-grabber"></div>
+    <h3>Add Chore</h3>
+
+    <input id="popupName" placeholder="Chore name">
+    <input id="popupAmount" placeholder="Amount ($)">
+
+    <button class="cancel-btn">Add</button>
+    <button class="cancel-btn" onclick="closeAddChorePopup()">Cancel</button>
+  </div>
+`;
 
   backdrop.addEventListener("click", function(e) {
     if (e.target === backdrop) closeAddChorePopup();
