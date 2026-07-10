@@ -763,13 +763,14 @@ function updateUI() {
   choreHeader.innerText = "⌄ Chores";
   }
 
-  let activityHeader = document.getElementById("activitySection").previousElementSibling;
+  let activitySection = document.getElementById("activitySection");
+let activityHeader = activitySection.parentElement.querySelector("h3");
 
 if (activityCollapsed) {
-  document.getElementById("activitySection").style.display = "none";
+  activitySection.style.display = "none";
   activityHeader.innerText = "› Activity";
 } else {
-  document.getElementById("activitySection").style.display = "block";
+  activitySection.style.display = "block";
   activityHeader.innerText = "⌄ Activity";
 }
   
