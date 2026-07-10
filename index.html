@@ -240,13 +240,23 @@
 </div>
   
 <div class="box">
-  <h3 onclick="toggleActivity()" style="cursor: pointer;">
-    ⌄ Activity
-  </h3>
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <h3 onclick="toggleActivity()" style="cursor:pointer; margin:0;">
+      ⌄ Activity
+    </h3>
+
+    <button
+      onclick="pressAndRun(this, copyTodayActivity)"
+      style="width:36px; height:36px; padding:0; font-size:20px; margin:0;"
+      aria-label="Copy today's activity"
+    >
+      ⧉
+    </button>
+  </div>
+
   <div id="activitySection">
     <div id="activityDate" style="color:#666; font-size:14px; margin-bottom:8px;"></div>
     <div id="activityList"></div>
-    <button onclick="pressAndRun(this, copyTodayActivity)">Copy Today's Activity</button>
   </div>
 </div>
   
