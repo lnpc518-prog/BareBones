@@ -551,7 +551,7 @@ function toggleHistory() {
 
   function toggleActivity() {
   let activitySection = document.getElementById("activitySection");
-  let activityHeader = activitySection.previousElementSibling;
+  let activityHeader = document.querySelector(".box h3[onclick='toggleActivity()']");
 
   activityCollapsed = !activityCollapsed;
 
