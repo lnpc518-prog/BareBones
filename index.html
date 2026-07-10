@@ -877,6 +877,27 @@ function addChore(nameOverride, amountOverride) {
   updateUI();
 }
 
+
+  function copyTodayActivity() {
+  let todayEntries = activity.filter(entry =>
+    entry.day === activeDay && !entry.archived
+  );
+
+  let total = todayEntries.reduce((sum, entry) => sum + entry.amount, 0);
+
+  let lines = todayEntries.map(entry =>
+    `✓ ${entry.chore} — $${formatMoney(entry.amount)}`
+  );
+
+  let text =
+    `Today's accomplishments:\n\n` +
+    lines.join("\n") +
+    `\n\nTotal earned: $${formatMoney(total)}`;
+
+  navigator.clipboard.writeText(text);
+  alert("Today's activity copied!");
+}
+
   function addChoreFromPopup() {
   let name = document.getElementById("popupName").value;
   let amount = parseFloat(document.getElementById("popupAmount").value);
